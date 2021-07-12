@@ -1,0 +1,19 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: dapr-ddd-action-mysql       # 自定义
+  namespace: dapr-ddd-action-mysql  # 自定义
+spec:
+  type: bindings.mysql
+  version: v1
+  metadata:
+    - name: url # Required, define DB connection in DSN format
+      value: "root:123456@tcp(127.0.0.1:3306)/study?timeout=5s&readTimeout=5s&writeTimeout=5s&parseTime=true&loc=Local&charset=utf8,utf8mb4"
+    - name: maxIdleConns
+      value: "10"
+    - name: maxOpenConns
+      value: "10"
+    - name: connMaxLifetime
+      value: "12s"
+    - name: connMaxIdleTime
+      value: "12s"
