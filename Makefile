@@ -8,7 +8,7 @@ all: help
 .PHONY: tidy
 tidy: ## Updates the go modules and vendors all dependencies
 	go mod tidy
-	go mod vendor
+	#go mod vendor
 
 .PHONY: test
 test: tidy ## Tests the entire project
@@ -21,7 +21,9 @@ run: tidy ## Runs uncompiled code in Dapr
 		--app-port 8082 \
 		--app-protocol http \
 		--dapr-http-port 3500 \
-        go run main.go
+		--components-path ./components \
+		--log-level debug \
+        go run ./cmd/dapr-admin/main.go
 
 .PHONY: invoke
 invoke: ## Invokes service through Dapr API
