@@ -11,3 +11,5 @@ dapr run \
     --components-path ./config \
     go run main.go
 ```
+
+or run `make run`
