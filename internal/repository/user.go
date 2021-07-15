@@ -45,7 +45,7 @@ func (u *userRepo) QueryUserById(ctx context.Context, id int) (*po.UserPO, error
 		daprc.DaprMySQLOperation,
 		daprc.DaprMySQLMetaDataKey,
 		querySQL,
-		[]byte("1"))
+		nil)
 
 	out, err := u.client.InvokeBinding(ctx, in)
 
