@@ -2,7 +2,7 @@ package daprhelp
 
 import "github.com/dapr/go-sdk/client"
 
-// BuildBindingRequest 创建Request
+// BuildBindingRequest build request such as follow:
 //type InvokeBindingRequest struct {
 //	// Name is name of binding to invoke.
 //	Name string

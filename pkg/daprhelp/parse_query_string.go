@@ -16,8 +16,10 @@ func initQueryCache(queryString string) Values {
 	if queryString == "" {
 		return nil
 	}
+
 	val := Values{}
 	queryStrArr := strings.Split(queryString, "&")
+
 	for _, s := range queryStrArr {
 		keyValArr := strings.Split(s, "=")
 		val[keyValArr[0]] = keyValArr[1]

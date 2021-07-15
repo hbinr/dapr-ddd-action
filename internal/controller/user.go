@@ -7,6 +7,10 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/dapr-ddd-action/internal/pkg/constant/e"
+
+	"github.com/dapr-ddd-action/internal/service/dto"
+
 	"github.com/dapr-ddd-action/pkg/daprhelp"
 
 	"github.com/dapr/go-sdk/service/common"
@@ -35,16 +39,30 @@ func (u UserController) GetUser(ctx context.Context, in *common.InvocationEvent)
 		// in.QueryString 值为 name=value&name2=value2, 需要自己解析
 		idStr := daprhelp.GetQuery(in.QueryString, "id")
 		if idStr != "" {
-			id, err := strconv.Atoi(idStr)
-			_ = id
-			if err != nil {
-				out.Data = []byte(err.Error())
+			var (
+				id      int
+				data    []byte
+				userDto *dto.UserDTO
+			)
+			if id, err = strconv.Atoi(idStr); err != nil {
+				return nil, err
 			}
 
-			userDto, _ := u.service.GetUser(ctx, id)
+			userDto, err = u.service.GetUser(ctx, id)
 
-			data, _ := json.Marshal(userDto)
-			out.Data = data
+			switch err {
+			case nil:
+				if data, err = json.Marshal(userDto); err != nil {
+					return nil, err
+				}
+
+				out.Data = data
+				out.ContentType = "application/json"
+			case e.ErrNotFound:
+				return nil, e.ErrNotFound
+			default:
+				return nil, err
+			}
 		}
 	}
 	return
