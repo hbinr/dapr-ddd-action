@@ -23,7 +23,7 @@ run: tidy ## Runs uncompiled code in Dapr
 		--dapr-http-port 3500 \
 		--components-path ./components \
 		--log-level debug \
-        go  ./cmd/dapr-admin/main.go
+        go run ./cmd/dapr-admin/main.go
 
 .PHONY: invoke
 invoke: ## Invokes service through Dapr API
