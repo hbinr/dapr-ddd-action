@@ -1,5 +1,3 @@
-
-
 ## Run
 To run this demo in Dapr, run:
 ```bash
@@ -11,3 +9,7 @@ dapr run \
     --components-path ./config \
     go run main.go
 ```
+
+or run `make run`
+
+- `dapr-study` study note
