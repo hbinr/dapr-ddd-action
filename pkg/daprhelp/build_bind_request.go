@@ -8,7 +8,7 @@ import "github.com/dapr/go-sdk/client"
 //	Name string
 //	// Operation is the name of the operation type for the binding to invoke
 //	Operation string
-//	// Data is the input bindings sent
+//	// Data is the input bindings sent  比如绑定 http 组件时, 请求方法为PUT/POST，参数为JSON数据
 //	Data []byte
 //	// Metadata is the input binding metadata
 //	Metadata map[string]string

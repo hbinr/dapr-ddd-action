@@ -12,5 +12,6 @@ func (u UserController) SayHi(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-type", "application/json")
+
 	_ = json.NewEncoder(w).Encode(vars["world"])
 }

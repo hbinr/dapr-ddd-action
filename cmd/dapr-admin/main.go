@@ -53,6 +53,7 @@ func RegisterHttpServiceByMux(ctl controller.UserController) daprCommon.Service 
 
 	r := mux.NewRouter()
 	r.HandleFunc("/hello/{world}", ctl.SayHi).Methods("GET")
+	netMux.Handle("/", r)
 
 	server := daprd.NewServiceWithMux(serviceAddress, netMux)
 	return server

@@ -36,6 +36,7 @@ func (u UserController) GetUser(ctx context.Context, in *common.InvocationEvent)
 	}
 	out = new(common.Content)
 	if in.Verb == http.MethodGet {
+
 		// in.QueryString 值为 name=value&name2=value2, 需要自己解析
 		idStr := daprhelp.GetQuery(in.QueryString, "id")
 		if idStr != "" {
