@@ -57,7 +57,7 @@ func (u *userRepo) QueryUserById(ctx context.Context, id int) (*po.UserPO, error
 		return nil, errors.Wrapf(err, "repository: QueryUserById faild, sql:[%s]", querySQL)
 	}
 
-	// ????? 必须这样判断返回的数据是否为空吗？ 太丑了~
+	// ????? 必须这样判断返回的数据是否为空吗？ 太丑了~ 就不能返回 err =  ErrNotFound
 	if string(out.Data) == "null" {
 		return nil, e.ErrNotFound
 	}

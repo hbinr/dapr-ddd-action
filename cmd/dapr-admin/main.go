@@ -4,16 +4,17 @@ import (
 	"log"
 	"net/http"
 
-	daprCommon "github.com/dapr/go-sdk/service/common"
 	"github.com/gin-gonic/gin"
 
 	"github.com/dapr/kit/logger"
 	"github.com/gorilla/mux"
 
+	daprCommon "github.com/dapr/go-sdk/service/common"
+	daprd "github.com/dapr/go-sdk/service/http"
+
 	"github.com/dapr-ddd-action/internal/controller"
 	appRepo "github.com/dapr-ddd-action/internal/repository"
 	appService "github.com/dapr-ddd-action/internal/service"
-	daprd "github.com/dapr/go-sdk/service/http"
 )
 
 var serviceAddress = ":8090"
