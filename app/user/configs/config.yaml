@@ -1,12 +1,13 @@
 system:
-  mode: "dev"
-  start_time: "2020-10-01"
+  mode: "debug"  # test/debug/release
+  start_time: "2021-7-15"
   machine_id: 1
+  port: 8090
 
 log:
   prefix: "[user-service]"
   level: "error"
-  filename: "./logs/user-service.log"
+  file_name: "./logs/user-service.log"
   max_size: 200
   max_age: 30
   max_backups: 7

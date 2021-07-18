@@ -2,10 +2,10 @@
 run:
 ```bash
 dapr run \
-    --app-id http-service-demo \
+    --app-id server-service-demo \
     --app-port 8080 \
-    --app-protocol http \
-    --dapr-http-port 3500 \
+    --app-protocol server \
+    --dapr-server-port 3500 \
     --components-path ./config \
     go run main.go
 ```

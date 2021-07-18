@@ -15,7 +15,7 @@ func QueryInt(param string, c *gin.Context) (intVar int64, err error) {
 	}
 
 	if intVar, err = strconv.ParseInt(intStr, 10, 64); err != nil {
-		zap.L().Error("strconv.Atoi(intStr) 异常", zap.Error(err))
+		zap.L().Error("strconv.ParseInt(intStr) 异常", zap.Error(err), zap.String("param", param))
 		return
 	}
 

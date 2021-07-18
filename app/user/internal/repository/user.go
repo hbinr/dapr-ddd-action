@@ -12,8 +12,6 @@ import (
 	"github.com/dapr-ddd-action/app/pkg/constant/daprc"
 	"github.com/dapr-ddd-action/app/pkg/constant/e"
 
-	"github.com/pkg/errors"
-
 	"github.com/dapr-ddd-action/pkg/daprhelp"
 	dapr "github.com/dapr/go-sdk/client"
 )
@@ -54,17 +52,17 @@ func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.UserPO, err
 	var resPO []*po.UserPO
 
 	if err != nil {
-		return nil, errors.Wrapf(err, "repository: QueryUserById faild, sql:[%s]", querySQL)
+		u.logger.Error("QueryUserById failed", zap.Error(err))
+		return nil, err
 	}
 
 	// ????? 必须这样判断返回的数据是否为空吗？ 太丑了~
 	if string(out.Data) == "null" {
-		u.logger.Error("user not found", zap.Error(err))
+		u.logger.Error("user not found", zap.Error(err), zap.Int64("id", id))
 		return nil, e.ErrUserNotExist
 	}
 
 	if err = json.Unmarshal(out.Data, &resPO); err != nil {
-		fmt.Println("err:", err)
 		return nil, err
 	}
 

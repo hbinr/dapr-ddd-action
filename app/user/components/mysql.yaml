@@ -2,8 +2,8 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: user-service-mysql       # 自定义
-  namespace: user-service-mysql  # 自定义
+  name: dapr-user-service-mysql       # 自定义
+  namespace: dapr-user-service-mysql  # 自定义
 spec:
   type: bindings.mysql
   version: v1

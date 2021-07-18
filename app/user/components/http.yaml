@@ -2,11 +2,11 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: dapr-ddd-action-http
-  namespace: dapr-ddd-action-http
+  name: dapr-user-service-server
+  namespace: dapr-user-service-server
 spec:
-  type: bindings.http
+  type: bindings.server
   version: v1
   metadata:
   - name: url  # 别的服务调用 HTTP 请求的 base URL, eg:http://dapr-ddd-action-http.com/api/v1/users
-    value: http://dapr-ddd-action-http.com
+    value: server://dapr-ddd-action-server.com

@@ -1,5 +1,5 @@
 RELEASE_VERSION  =v0.0.1
-SERVICE_NAME    ?=user-service
+SERVICE_NAME    ?=dapr-user-service
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
 .PHONY: all
@@ -15,7 +15,7 @@ test: tidy ## Tests the entire project
 	go test -count=1 -race ./...
 
 .PHONY: run
-run: tidy ## Runs uncompiled code in Dapr
+run: tidy ## Runs uncompiled code in Dapr, log_level: debug/info/error/warning
 	dapr run \
 		--app-id $(SERVICE_NAME) \
 		--app-port 8082 \
@@ -23,7 +23,7 @@ run: tidy ## Runs uncompiled code in Dapr
 		--dapr-http-port 3500 \
 		--components-path ./components \
 		--log-level debug \
-        go run ./cmd/user-service/main.go
+        go run  ./cmd/user-service/main.go
 
 .PHONY: invoke
 invoke: ## Invokes service through Dapr API

@@ -1,8 +1,8 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: user-service-redis
-  namespace: user-service-redis
+  name: dapr-user-service-redis
+  namespace: dapr-user-service-redis
 spec:
   type: bindings.redis
   version: v1

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	conf "github.com/dapr-ddd-action/app/pkg/conf"
+	"github.com/dapr-ddd-action/app/pkg/conf"
 
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
@@ -28,7 +28,7 @@ func InitZap(cfg *conf.Config) (logger *zap.Logger, err error) {
 		fmt.Println("zap init failed:", err)
 		return
 	}
-	if cfg.Mode == "dev" {
+	if cfg.Mode == "debug" {
 		// 进入开发模式，日志输出到终端
 		consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
 		core = zapcore.NewTee(
@@ -39,6 +39,7 @@ func InitZap(cfg *conf.Config) (logger *zap.Logger, err error) {
 		core = zapcore.NewCore(encoder, writeSyncer, l)
 	}
 	logger = zap.New(core, zap.AddCaller())
+	zap.ReplaceGlobals(logger)
 	zap.L().Info("init logger success")
 	return
 }
