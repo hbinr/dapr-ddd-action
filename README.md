@@ -11,7 +11,7 @@ dapr run \
 ```
 
 or run `make run`
-<<<<<<< HEAD
+
 ## 分支介绍
 - `main` 主分支
 - `dapr-study`  是学习dapr所创建的分支,包含:
@@ -20,5 +20,4 @@ or run `make run`
     - 绑定MySQL组件
 - `ddd` 使用 DDD 思想来开发一个完整的项目 
     
-=======
->>>>>>> dapr-study
+
