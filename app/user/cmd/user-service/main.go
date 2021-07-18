@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dapr-ddd-action/app/user/service/internal"
+	"github.com/dapr-ddd-action/app/user/internal"
 
 	"go.uber.org/zap"
 
@@ -12,10 +12,10 @@ import (
 
 	"github.com/dapr-ddd-action/app/pkg/conf"
 
-	"github.com/dapr-ddd-action/app/user/service/internal/controller"
+	"github.com/dapr-ddd-action/app/user/internal/controller"
 
-	"github.com/dapr-ddd-action/app/user/service/internal/repository"
-	"github.com/dapr-ddd-action/app/user/service/internal/service"
+	"github.com/dapr-ddd-action/app/user/internal/repository"
+	"github.com/dapr-ddd-action/app/user/internal/service"
 
 	daprCommon "github.com/dapr/go-sdk/service/common"
 

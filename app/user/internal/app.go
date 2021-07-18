@@ -3,7 +3,8 @@ package internal
 import (
 	"net/http"
 
-	"github.com/dapr-ddd-action/app/user/service/internal/controller"
+	"github.com/dapr-ddd-action/app/user/internal/controller"
+
 	"github.com/gin-gonic/gin"
 )
 

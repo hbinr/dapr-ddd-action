@@ -3,9 +3,9 @@ package controller
 import (
 	"context"
 
-	"github.com/dapr-ddd-action/app/pkg/constant/e"
+	"github.com/dapr-ddd-action/app/user/internal/service"
 
-	"github.com/dapr-ddd-action/app/user/service/internal/service"
+	"github.com/dapr-ddd-action/app/pkg/constant/e"
 
 	"github.com/dapr-ddd-action/pkg/ginx"
 

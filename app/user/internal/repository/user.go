@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"go.uber.org/zap"
+	"github.com/dapr-ddd-action/app/user/internal/repository/po"
 
-	"github.com/dapr-ddd-action/app/user/service/internal/repository/po"
+	"go.uber.org/zap"
 
 	"github.com/dapr-ddd-action/app/pkg/constant/daprc"
 	"github.com/dapr-ddd-action/app/pkg/constant/e"

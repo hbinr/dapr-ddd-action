@@ -1,5 +1,5 @@
 RELEASE_VERSION  =v0.0.1
-SERVICE_NAME    ?=httt-dapr-admin-service
+SERVICE_NAME    ?=user-service
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
 .PHONY: all

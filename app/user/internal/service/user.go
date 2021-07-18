@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 
-	"github.com/dapr-ddd-action/app/user/service/internal/repository"
-	"github.com/dapr-ddd-action/app/user/service/internal/repository/po"
-	"github.com/dapr-ddd-action/app/user/service/internal/service/dto"
+	"github.com/dapr-ddd-action/app/user/internal/repository"
+	"github.com/dapr-ddd-action/app/user/internal/repository/po"
+	"github.com/dapr-ddd-action/app/user/internal/service/dto"
 
 	"github.com/jinzhu/copier"
 )
