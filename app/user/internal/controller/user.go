@@ -22,7 +22,7 @@ func RegisterUserRouter(r *gin.Engine, us service.UserService) {
 }
 
 func (u UserController) GetUser(c *gin.Context) {
-	id, err := ginx.QueryInt("ids", c)
+	id, err := ginx.QueryInt("id", c)
 
 	if err != nil {
 		ginx.RespError(c, e.CodeInvalidParams)

@@ -7,6 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// QueryInt Parsing http parameters or query parameters
 func QueryInt(param string, c *gin.Context) (intVar int64, err error) {
 	var intStr string
 
@@ -15,7 +16,7 @@ func QueryInt(param string, c *gin.Context) (intVar int64, err error) {
 	}
 
 	if intVar, err = strconv.ParseInt(intStr, 10, 64); err != nil {
-		zap.L().Error("strconv.ParseInt(intStr) 异常", zap.Error(err), zap.String("param", param))
+		zap.L().Error("strconv.ParseInt(intStr) failed", zap.Error(err), zap.String("param", param))
 		return
 	}
 

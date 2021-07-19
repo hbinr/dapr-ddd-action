@@ -2,8 +2,9 @@ package repository
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+
+	"github.com/dapr-ddd-action/pkg/jsonx"
 
 	"github.com/dapr-ddd-action/app/user/internal/repository/po"
 
@@ -62,7 +63,7 @@ func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.UserPO, err
 		return nil, e.ErrUserNotExist
 	}
 
-	if err = json.Unmarshal(out.Data, &resPO); err != nil {
+	if err = jsonx.Unmarshal(out.Data, &resPO); err != nil {
 		return nil, err
 	}
 
