@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dapr-ddd-action/app/pkg/conf"
-
+	"github.com/dapr-ddd-action/pkg/conf"
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

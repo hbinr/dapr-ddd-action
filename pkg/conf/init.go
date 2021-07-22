@@ -7,12 +7,10 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var defaultConfigFilePath = "./configs/config.yaml"
-
-func Init() (conf *Config, err error) {
+func Init(filePath string) (conf *Config, err error) {
 	var data []byte
 
-	if data, err = os.ReadFile(defaultConfigFilePath); err != nil {
+	if data, err = os.ReadFile(filePath); err != nil {
 		return
 	}
 
@@ -21,6 +19,7 @@ func Init() (conf *Config, err error) {
 	if err = yaml.Unmarshal(data, cfg); err != nil {
 		return
 	}
+
 	conf = new(Config)
 	if err = config.Decode(cfg, conf); err != nil {
 		return

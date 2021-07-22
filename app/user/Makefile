@@ -23,6 +23,7 @@ run: tidy ## Runs uncompiled code in Dapr, log_level: debug/info/error/warning
 		--dapr-http-port 3500 \
 		--components-path ./components \
 		--log-level debug \
+		--config ./configs/config.yaml \
         go run  ./cmd/user-service/main.go
 
 .PHONY: invoke

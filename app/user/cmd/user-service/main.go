@@ -5,25 +5,24 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dapr-ddd-action/app/user/internal/controller"
-
-	"github.com/dapr-ddd-action/pkg/ginx"
-
 	"go.uber.org/zap"
 
-	zapLogger "github.com/dapr-ddd-action/pkg/loggger"
-
-	"github.com/dapr-ddd-action/app/pkg/conf"
-
+	"github.com/dapr-ddd-action/app/user/internal/controller"
 	"github.com/dapr-ddd-action/app/user/internal/repository"
 	"github.com/dapr-ddd-action/app/user/internal/service"
+	"github.com/dapr-ddd-action/pkg/conf"
+	"github.com/dapr-ddd-action/pkg/ginx"
+	zapLogger "github.com/dapr-ddd-action/pkg/loggger"
 
 	daprCommon "github.com/dapr/go-sdk/service/common"
 
 	daprd "github.com/dapr/go-sdk/service/http"
 )
 
+var defaultConfigFilePath = "./configs/config.yaml"
+
 func main() {
+
 	if err := initApp().Start(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("main: listening error :%v+\n", err)
 	}
@@ -31,7 +30,7 @@ func main() {
 
 // initApp 初识化服务
 func initApp() daprCommon.Service {
-	appConf, err := conf.Init()
+	appConf, err := conf.Init(defaultConfigFilePath)
 	if err != nil {
 		log.Fatalf("main: init config error: %v+\n", err)
 	}

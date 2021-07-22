@@ -1,3 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: daprConfig
+spec:
+  tracing:
+    samplingRate: "1"
+    zipkin:
+      endpointAddress: http://localhost:9411/api/v2/spans
+
 system:
   mode: "debug"  # test/debug/release
   start_time: "2021-7-15"
@@ -11,4 +21,3 @@ log:
   max_size: 200
   max_age: 30
   max_backups: 7
-
