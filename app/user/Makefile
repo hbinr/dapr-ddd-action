@@ -19,10 +19,11 @@ run: tidy ## Runs uncompiled code in Dapr, log_level: debug/info/error/warning
 	dapr run \
 		--app-id $(SERVICE_NAME) \
 		--app-port 8082 \
-		--app-protocol http \
+		--app-protocol grpc \
+		--app-max-concurrency  10000000 \
 		--dapr-http-port 3500 \
 		--components-path ./components \
-		--log-level debug \
+		--log-level error \
 		--config ./configs/config.yaml \
         go run  ./cmd/user-service/main.go
 

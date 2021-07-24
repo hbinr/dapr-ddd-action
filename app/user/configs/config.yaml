@@ -9,7 +9,7 @@ spec:
       endpointAddress: http://localhost:9411/api/v2/spans
 
 system:
-  mode: "debug"  # test/debug/release
+  mode: "release"  # test/debug/release
   start_time: "2021-7-15"
   machine_id: 1
   port: 8090
