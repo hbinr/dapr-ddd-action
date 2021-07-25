@@ -22,6 +22,8 @@ import (
 
 var defaultConfigFilePath = "./configs/config.yaml"
 
+//var defaultConfigFilePath = "../../configs/config.yaml"
+
 func main() {
 
 	if err := initApp().Start(); err != nil && err != http.ErrServerClosed {

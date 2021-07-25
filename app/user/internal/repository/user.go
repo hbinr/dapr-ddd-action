@@ -19,6 +19,7 @@ import (
 
 type UserRepository interface {
 	QueryUserById(ctx context.Context, id int64) (*po.UserPO, error)
+	UpdateUser(ctx context.Context, id int64, userName string) error
 }
 
 type userRepo struct {
@@ -43,7 +44,7 @@ func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.UserPO, err
 
 	in := daprhelp.BuildBindingRequest(
 		daprc.DaprMySQLBindName,
-		daprc.DaprMySQLOperation,
+		daprc.DaprMySQLOperationQuery,
 		daprc.DaprMySQLMetaDataKey,
 		querySQL,
 		nil)
@@ -69,4 +70,25 @@ func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.UserPO, err
 
 	return resPO[0], nil
 
+}
+
+func (u *userRepo) UpdateUser(ctx context.Context, id int64, userName string) error {
+	updateSQL := fmt.Sprintf(`update user set user_name = '%s' where  id = %d`, userName, id)
+
+	in := daprhelp.BuildBindingRequest(
+		daprc.DaprMySQLBindName,
+		daprc.DaprMySQLOperationExec,
+		daprc.DaprMySQLMetaDataKey,
+		updateSQL,
+		nil)
+
+	out, err := u.client.InvokeBinding(ctx, in)
+
+	if err != nil {
+		u.logger.Error("UpdateUser failed", zap.Error(err))
+		return err
+	}
+	fmt.Printf("out:%v+\n", out)
+
+	return nil
 }

@@ -3,15 +3,17 @@ module github.com/dapr-ddd-action
 go 1.16
 
 require (
+	github.com/bytedance/go-tagexpr/v2 v2.8.1
 	github.com/bytedance/sonic v0.0.0-20210718033759-a5efd7e8b7c2
 	github.com/dapr/go-sdk v1.1.0
 	github.com/dapr/kit v0.0.2-0.20210614175626-b9074b64d233
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-chi/chi/v5 v5.0.3
 	github.com/go-chi/render v1.0.1
-	github.com/google/go-cmp v0.5.5 // indirect
+	github.com/henrylee2cn/goutil v0.0.0-20210421033923-b50c8d7a9d5d // indirect
 	github.com/jinzhu/copier v0.3.2
 	github.com/klauspost/cpuid/v2 v2.0.8 // indirect
+	github.com/labstack/echo/v4 v4.4.0
 	github.com/mattn/go-isatty v0.0.13 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
