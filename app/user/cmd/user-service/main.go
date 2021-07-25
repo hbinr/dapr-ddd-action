@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/dapr-ddd-action/pkg/chix"
 
 	"go.uber.org/zap"
 
@@ -20,8 +20,7 @@ import (
 	daprd "github.com/dapr/go-sdk/service/http"
 )
 
-//var defaultConfigFilePath = "./configs/config.yaml"
-var defaultConfigFilePath = "../../configs/config.yaml"
+var defaultConfigFilePath = "./configs/config.yaml"
 
 func main() {
 
@@ -48,14 +47,10 @@ func initApp() daprCommon.Service {
 	}
 
 	userService := service.NewUserService(userRepo, logger)
-	//engine := ginx.NewGinEngine(appConf)
-	//controller.RegisterUserRouter(engine, userService)
+	router := chix.NewChiMux()
+	controller.RegisterUserRouter(router, userService)
 
-	//chi router
-	router := chi.NewRouter()
-	controller.RegisterUserRouterChi(router, userService)
 	mux := http.NewServeMux()
-	//mux.Handle("/", engine)
 	mux.Handle("/", router)
 	appServer := daprd.NewServiceWithMux(fmt.Sprintf(":%d", appConf.Port), mux)
 	return appServer
