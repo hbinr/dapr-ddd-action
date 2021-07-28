@@ -18,8 +18,8 @@ test: tidy ## Tests the entire project
 run: tidy ## Runs uncompiled code in Dapr, log_level: debug/info/error/warning
 	dapr run \
 		--app-id $(SERVICE_NAME) \
-		--app-port 8082 \
-		--app-protocol grpc \
+		--app-port 8090 \
+		--app-protocol http \
 		--app-max-concurrency  10000000 \
 		--dapr-http-port 3500 \
 		--components-path ./components \

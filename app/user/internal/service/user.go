@@ -3,15 +3,18 @@ package service
 import (
 	"context"
 
-	"github.com/dapr-ddd-action/app/pkg/constant/e"
-
 	"go.uber.org/zap"
 
 	"github.com/dapr-ddd-action/app/user/internal/repository"
 	"github.com/dapr-ddd-action/app/user/internal/repository/po"
 	"github.com/dapr-ddd-action/app/user/internal/service/dto"
+	"github.com/dapr-ddd-action/pkg/errorx"
 
 	"github.com/jinzhu/copier"
+)
+
+var (
+	ErrConvertUserDto = errorx.NewConvertDataError("data convert failed", "convert-data")
 )
 
 type UserService struct {
@@ -33,7 +36,7 @@ func (u UserService) GetUser(ctx context.Context, id int64) (resDTO *dto.UserDTO
 
 	resDTO = new(dto.UserDTO)
 	if err = copier.Copy(resDTO, userPO); err != nil {
-		err = e.ErrConvDataErr
+		err = ErrConvertUserDto
 		return
 	}
 
