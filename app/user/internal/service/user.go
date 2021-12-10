@@ -27,14 +27,14 @@ func NewUserService(repo repository.UserRepository,
 	return UserService{repo: repo, logger: logger}
 }
 
-func (u UserService) GetUser(ctx context.Context, id int64) (resDTO *dto.UserDTO, err error) {
-	var userPO *po.UserPO
+func (u UserService) GetUser(ctx context.Context, id int64) (resDTO *dto.User, err error) {
+	var userPO *po.User
 
 	if userPO, err = u.repo.QueryUserById(ctx, id); err != nil {
 		return
 	}
 
-	resDTO = new(dto.UserDTO)
+	resDTO = new(dto.User)
 	if err = copier.Copy(resDTO, userPO); err != nil {
 		err = ErrConvertUserDto
 		return

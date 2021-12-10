@@ -27,8 +27,6 @@ func RegisterUserRouter(mux *chi.Mux, us service.UserService) {
 }
 
 func (u UserController) GetUser(w http.ResponseWriter, r *http.Request) {
-	// go-tagexpr 的  path 参数需要实现 PathParams 接口的 Get 方法, 比较复杂, 直接用 chi,URLParam()省事
-
 	id, err := chix.QueryInt64("id", r)
 	if err != nil {
 		httperr.BadRequest("invalid-id", "", err, w, r)

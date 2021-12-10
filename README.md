@@ -1,6 +1,8 @@
 ## 如何运行项目？
 run:
 ```bash
+cd app/user
+
 dapr run \
     --app-id server-service-demo \
     --app-port 8080 \
@@ -10,7 +12,11 @@ dapr run \
     go run main.go
 ```
 
-or run `make run`
+or 
+```bash
+cd app/user
+make run
+```
 
 ## 分支介绍
 - `main` 主分支

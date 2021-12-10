@@ -1,6 +1,8 @@
 package daprhelp
 
-import "github.com/dapr/go-sdk/client"
+import (
+	"github.com/dapr/go-sdk/client"
+)
 
 // BuildBindingRequest build request such as follow:
 //type InvokeBindingRequest struct {

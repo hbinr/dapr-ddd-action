@@ -13,8 +13,8 @@ func InternalError(slug string, msg string, err error, w http.ResponseWriter, r 
 	httpRespondWithError(err, slug, msg, w, r, "Internal server error", http.StatusInternalServerError)
 }
 
-func Unauthorised(slug string, msg string, err error, w http.ResponseWriter, r *http.Request) {
-	httpRespondWithError(err, slug, msg, w, r, "Unauthorised", http.StatusUnauthorized)
+func Unauthorized(slug string, msg string, err error, w http.ResponseWriter, r *http.Request) {
+	httpRespondWithError(err, slug, msg, w, r, "Unauthorized", http.StatusUnauthorized)
 }
 
 func BadRequest(slug string, msg string, err error, w http.ResponseWriter, r *http.Request) {
@@ -30,7 +30,7 @@ func RespondWithError(err error, msg string, w http.ResponseWriter, r *http.Requ
 
 	switch respErr.ErrorType() {
 	case errorx.ErrorTypeAuthorization:
-		Unauthorised(respErr.Slug(), respErr.Error(), respErr, w, r)
+		Unauthorized(respErr.Slug(), respErr.Error(), respErr, w, r)
 	case errorx.ErrorTypeIncorrectInput:
 		BadRequest(respErr.Slug(), respErr.Error(), respErr, w, r)
 	default:

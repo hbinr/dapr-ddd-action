@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/dapr-ddd-action/app/pkg/constant"
+
 	"github.com/dapr-ddd-action/pkg/errorx"
 
 	"github.com/dapr-ddd-action/pkg/jsonx"
@@ -11,8 +13,6 @@ import (
 	"github.com/dapr-ddd-action/app/user/internal/repository/po"
 
 	"go.uber.org/zap"
-
-	"github.com/dapr-ddd-action/app/pkg/constant/daprc"
 
 	"github.com/dapr-ddd-action/pkg/daprhelp"
 	dapr "github.com/dapr/go-sdk/client"
@@ -23,7 +23,7 @@ var (
 )
 
 type UserRepository interface {
-	QueryUserById(ctx context.Context, id int64) (*po.UserPO, error)
+	QueryUserById(ctx context.Context, id int64) (*po.User, error)
 	UpdateUser(ctx context.Context, id int64, userName string) error
 }
 
@@ -44,19 +44,19 @@ func NewUserRepo(logger *zap.Logger) (UserRepository, error) {
 }
 
 // QueryUserById 通过 dapr  InvokeBinding API 访问MySQL
-func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.UserPO, error) {
-	querySQL := fmt.Sprintf(`select * from user where id = %d`, id)
+func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.User, error) {
+	querySQL := fmt.Sprintf("select * from user where id = %d", id)
 
 	in := daprhelp.BuildBindingRequest(
-		daprc.DaprMySQLBindName,
-		daprc.DaprMySQLOperationQuery,
-		daprc.DaprMySQLMetaDataKey,
+		constant.MySQLBindName,
+		constant.MySQLOperationQuery,
+		constant.MySQLMetaDataKey,
 		querySQL,
 		nil)
 
 	out, err := u.client.InvokeBinding(ctx, in)
 
-	var resPO []*po.UserPO
+	var resPO []*po.User
 
 	if err != nil {
 		u.logger.Error("QueryUserById failed", zap.Error(err))
@@ -81,9 +81,9 @@ func (u *userRepo) UpdateUser(ctx context.Context, id int64, userName string) er
 	updateSQL := fmt.Sprintf(`update user set user_name = '%s' where  id = %d`, userName, id)
 
 	in := daprhelp.BuildBindingRequest(
-		daprc.DaprMySQLBindName,
-		daprc.DaprMySQLOperationExec,
-		daprc.DaprMySQLMetaDataKey,
+		constant.MySQLBindName,
+		constant.MySQLOperationExec,
+		constant.MySQLMetaDataKey,
 		updateSQL,
 		nil)
 
