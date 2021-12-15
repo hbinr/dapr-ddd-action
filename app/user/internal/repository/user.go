@@ -45,13 +45,16 @@ func NewUserRepo(logger *zap.Logger) (UserRepository, error) {
 
 // QueryUserById 通过 dapr  InvokeBinding API 访问MySQL
 func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.User, error) {
-	querySQL := fmt.Sprintf("select * from user where id = %d", id)
+	// 1. 需要自己拼接SQL, 需要注意注入SQL的风险
+	// 2. 另外, 多个SQL一起更新, 事务怎么处理？
+	// 暂时没想到解决上述问题的方案
+	selectSQL := fmt.Sprintf("select * from user where id = %d", id)
 
 	in := daprhelp.BuildBindingRequest(
 		constant.MySQLBindName,
 		constant.MySQLOperationQuery,
 		constant.MySQLMetaDataKey,
-		querySQL,
+		selectSQL,
 		nil)
 
 	out, err := u.client.InvokeBinding(ctx, in)
