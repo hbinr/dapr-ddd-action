@@ -20,7 +20,7 @@
 # other
 
 .idea
-.vscode
+
 logs/
 *.log
 vendor

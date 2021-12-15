@@ -1,0 +1,20 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"appId": "dapr-user-service",
+			"appPort": 8091,
+			"label": "daprd-debug",
+			"type": "daprd",
+			"componentsPath": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/app/user/components",
+			"appProtocol": "http",
+			"logLevel": "debug",
+			// "config": "${workspaceFolder}/app/user/config/configs.yaml",
+		},
+		{
+			"appId": "dapr-user-service",
+			"label": "daprd-down",
+			"type": "daprd-down"
+		}
+	]
+}

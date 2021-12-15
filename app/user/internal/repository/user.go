@@ -62,8 +62,7 @@ func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.User, error
 		u.logger.Error("QueryUserById failed", zap.Error(err))
 		return nil, err
 	}
-
-	// ????? 必须这样判断返回的数据是否为空吗？ 太丑了~
+	// 必须这样判断返回的数据是否为空, 因为此处 err 返回为nil, 但是 data 为空. 太丑了~
 	if string(out.Data) == "null" {
 		u.logger.Error("user not found", zap.Error(err), zap.Int64("id", id))
 		return nil, ErrUserNotFound
