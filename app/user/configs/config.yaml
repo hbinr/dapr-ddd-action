@@ -16,7 +16,7 @@ system:
 
 log:
   prefix: "[user-service]"
-  level: "info"
+  level: "debug"
   file_name: "./logs/user-service.log"
   max_size: 200
   max_age: 30

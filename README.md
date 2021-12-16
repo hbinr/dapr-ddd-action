@@ -54,7 +54,7 @@ make run
 			// "componentsPath": "${workspaceFolder}/app/user/components",
 			"componentsPath": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/app/user/components",
 			// "config": "${workspaceFolder}/app/user/config/configs.yaml",
-			"config": "$/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/app/user/config/configs.yaml",
+			"config": "$/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/app/user/configs/config.yaml",
 		},
 		{
 			"appId": "dapr-user-service",

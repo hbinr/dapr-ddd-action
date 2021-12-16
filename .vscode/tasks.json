@@ -9,7 +9,7 @@
 			"componentsPath": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/app/user/components",
 			"appProtocol": "http",
 			"logLevel": "debug",
-			// "config": "${workspaceFolder}/app/user/config/configs.yaml",
+			// "config": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/app/user/configs/config.yaml",
 		},
 		{
 			"appId": "dapr-user-service",

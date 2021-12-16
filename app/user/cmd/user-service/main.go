@@ -20,7 +20,7 @@ import (
 	daprd "github.com/dapr/go-sdk/service/http"
 )
 
-var defaultConfigFilePath = "./configs/config.yaml"
+var defaultConfigFilePath = "../../configs/config.yaml"
 
 func main() {
 
