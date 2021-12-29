@@ -44,7 +44,5 @@ func (u UserService) GetUser(ctx context.Context, id int64) (resDTO *dto.User, e
 }
 
 func (u UserService) UpdateUser(ctx context.Context, id int64, userName string) error {
-
 	return u.repo.UpdateUser(ctx, id, userName)
-
 }

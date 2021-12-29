@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/dapr-ddd-action/app/pkg/constant"
+	"github.com/pkg/errors"
 
 	"github.com/dapr-ddd-action/pkg/errorx"
 
@@ -47,7 +48,7 @@ func NewUserRepo(logger *zap.Logger) (UserRepository, error) {
 func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.User, error) {
 	// 1. 需要自己拼接SQL, 需要注意注入SQL的风险
 	// 2. 另外, 多个SQL一起更新, 事务怎么处理？
-	// 暂时没想到解决上述问题的方案
+	// 暂时没想到解决上述问题更好的方案
 	selectSQL := fmt.Sprintf("select * from user where id = %d", id)
 
 	in := daprhelp.BuildBindingRequest(
@@ -59,8 +60,6 @@ func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.User, error
 
 	out, err := u.client.InvokeBinding(ctx, in)
 
-	var resPO []*po.User
-
 	if err != nil {
 		u.logger.Error("QueryUserById failed", zap.Error(err))
 		return nil, err
@@ -70,13 +69,13 @@ func (u *userRepo) QueryUserById(ctx context.Context, id int64) (*po.User, error
 		u.logger.Error("user not found", zap.Error(err), zap.Int64("id", id))
 		return nil, ErrUserNotFound
 	}
-
+	// out.Data 返回类型为数组
+	var resPO []*po.User
 	if err = jsonx.Unmarshal(out.Data, &resPO); err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "unmarshal user failed")
 	}
 
 	return resPO[0], nil
-
 }
 
 func (u *userRepo) UpdateUser(ctx context.Context, id int64, userName string) error {
