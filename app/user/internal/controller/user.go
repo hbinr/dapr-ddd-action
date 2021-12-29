@@ -6,12 +6,9 @@ import (
 	"strings"
 
 	"github.com/dapr-ddd-action/pkg/errorx/httperr"
+	"github.com/gorilla/mux"
 
-	"github.com/dapr-ddd-action/pkg/chix"
-
-	"github.com/go-chi/render"
-
-	"github.com/go-chi/chi/v5"
+	"github.com/dapr-ddd-action/pkg/httpx"
 
 	"github.com/dapr-ddd-action/app/user/internal/service"
 )
@@ -20,14 +17,16 @@ type UserController struct {
 	service service.UserService
 }
 
-func RegisterUserRouter(mux *chi.Mux, us service.UserService) {
+func RegisterUserRouter(r *mux.Router, us service.UserService) {
 	ctl := UserController{service: us}
-	mux.Get("/user/{id}", ctl.GetUser)
-	mux.Put("/user", ctl.UpdateUser)
+	r.HandleFunc("/user/{id}", ctl.GetUser).Methods(http.MethodGet)
+	r.HandleFunc("/user", ctl.UpdateUser).Methods(http.MethodPut)
 }
 
 func (u UserController) GetUser(w http.ResponseWriter, r *http.Request) {
-	id, err := chix.QueryInt64("id", r)
+	// 	varsMap := mux.Vars(r)
+	// actorType := varsMap["actorType"]
+	id, err := httpx.QueryInt64("id", r)
 	if err != nil {
 		httperr.BadRequest("invalid-id", "", err, w, r)
 		return
@@ -38,8 +37,8 @@ func (u UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 		httperr.RespondWithError(err, "", w, r)
 		return
 	}
-
-	render.Respond(w, r, userDto)
+	httpx.RespSuccess(userDto, w)
+	// render.Respond(w, r, userDto)
 }
 
 type UpdateUserReq struct {
@@ -49,7 +48,7 @@ type UpdateUserReq struct {
 
 func (u UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	req := new(UpdateUserReq)
-	if err := chix.BindAndValidate(req, r); err != nil {
+	if err := httpx.BindAndValidate(req, r); err != nil {
 		// 特殊处理 go-tagexpr  参数验证错误, 友好提示给用户
 		msg := strings.Split(err.Error(), "cause=")[1]
 
@@ -62,5 +61,5 @@ func (u UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	render.Respond(w, r, "OK")
+	httpx.RespSuccess("OK", w)
 }

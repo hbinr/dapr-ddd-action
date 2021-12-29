@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dapr-ddd-action/pkg/chix"
+	"github.com/gorilla/mux"
 
 	"go.uber.org/zap"
 
@@ -47,11 +47,9 @@ func initApp() daprCommon.Service {
 	}
 
 	userService := service.NewUserService(userRepo, logger)
-	router := chix.NewChiMux()
+	router := mux.NewRouter()
 	controller.RegisterUserRouter(router, userService)
 
-	mux := http.NewServeMux()
-	mux.Handle("/", router)
-	appServer := daprd.NewServiceWithMux(fmt.Sprintf(":%d", appConf.Port), mux)
+	appServer := daprd.NewServiceWithMux(fmt.Sprintf(":%d", appConf.Port), router)
 	return appServer
 }
