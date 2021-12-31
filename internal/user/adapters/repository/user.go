@@ -50,12 +50,7 @@ func (u *userRepo) GetUserById(ctx context.Context, id int64) (*do.User, error) 
 	// 暂时没想到解决上述问题更好的方案
 	selectSQL := fmt.Sprintf("select * from user where id = %d", id)
 
-	in := daprhelp.BuildBindingRequest(
-		constant.MySQLBindName,
-		constant.MySQLOperationQuery,
-		constant.MySQLMetaDataKey,
-		selectSQL,
-		nil)
+	in := daprhelp.BuildMySQLQueryBinding(constant.MySQLBindName, selectSQL)
 
 	out, err := u.client.InvokeBinding(ctx, in)
 
@@ -80,12 +75,7 @@ func (u *userRepo) GetUserById(ctx context.Context, id int64) (*do.User, error) 
 func (u *userRepo) UpdateUser(ctx context.Context, user *do.User) error {
 	updateSQL := fmt.Sprintf(`update user set user_name = '%s' where  id = %d`, user.UserName, user.ID)
 
-	in := daprhelp.BuildBindingRequest(
-		constant.MySQLBindName,
-		constant.MySQLOperationExec,
-		constant.MySQLMetaDataKey,
-		updateSQL,
-		nil)
+	in := daprhelp.BuildMySQLExecBinding(constant.MySQLBindName, updateSQL)
 
 	_, err := u.client.InvokeBinding(ctx, in)
 
