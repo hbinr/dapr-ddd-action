@@ -1,7 +1,11 @@
 ## 项目介绍
-- 数据操作方面使用的MySQL Binding，遇到的问题
-  - SQL注入无法避免，需要手动判断每个入参的合法性
-  - 多次SQL操作无法保证事务
+
+## 特别说明: 数据操作
+遇到的问题:
+- SQL注入无法避免，需要手动判断每个入参的合法性
+- 多次SQL操作无法保证事务
+
+> 看了下微软官方 [Dapr实战项目](https://github.com/dotnet-architecture/eShopOnDapr) ，使用的是 SQL Server 来存储。所以自己也打算换掉数据存储方式，不再使用Dapr提供的Binding功能
 ## 如何运行项目？
 run:
 ```bash
@@ -55,10 +59,10 @@ make run
 			"label": "daprd-debug",
 			"type": "daprd",
             "logLevel": "debug",
-			// "componentsPath": "${workspaceFolder}/app/user/components",
-			"componentsPath": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/app/user/components",
-			// "config": "${workspaceFolder}/app/user/config/configs.yaml",
-			"config": "$/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/app/user/configs/config.yaml",
+			// "componentsPath": "${workspaceFolder}/dapr/components",
+			"componentsPath": "/Users/xx/go/workspace/my-project/dapr-ddd-action/dapr/components",
+			// "config": "${workspaceFolder}/internal/user/config/configs.yaml",
+			"config": "/Users/xx/go/workspace/my-project/dapr-ddd-action/internal/user/configs/config.yaml",
 		},
 		{
 			"appId": "dapr-user-service",
@@ -76,4 +80,4 @@ make run
 - `type` 为 `daprd` 或 `daprd-down`
 - `logLevel` 为日志级别，示例中指定了 debug
 - `componentsPath` 为dapr使用的组件路径
-- `${workspaceFolder}` 是项目的根目录，需要手动指定，eg: `/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action`
+- `${workspaceFolder}` 是项目的根目录，需要手动指定

@@ -22,10 +22,10 @@ run: tidy ## Runs uncompiled code in Dapr, log_level: debug/info/error/warning
 		--app-protocol http \
 		--app-max-concurrency  10000000 \
 		--dapr-http-port 3500 \
-		--components-path ./components \
+		--components-path ../../dapr/components \
 		--log-level error \
 		--config ./configs/config.yaml \
-        go run  ./cmd/user-service/main.go
+        go run  ./main.go
 
 .PHONY: invoke
 invoke: ## Invokes service through Dapr API

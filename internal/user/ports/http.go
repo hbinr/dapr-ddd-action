@@ -18,10 +18,6 @@ type UserController struct {
 	app app.Application
 }
 
-func NewUserController(application app.Application) UserController {
-	return UserController{app: application}
-}
-
 func RegisterUserRouter(r *mux.Router, app app.Application) {
 	ctl := UserController{app}
 	r.HandleFunc("/user/{id}", ctl.GetUser).Methods(http.MethodGet)
