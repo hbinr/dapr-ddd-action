@@ -6,10 +6,10 @@
 			"appPort": 8091,
 			"label": "daprd-debug",
 			"type": "daprd",
-			"componentsPath": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/app/user/components",
+			"componentsPath": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/dapr/components",
 			"appProtocol": "http",
 			"logLevel": "debug",
-			// "config": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/app/user/configs/config.yaml",
+			// "config": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/internal/user/configs/config.yaml",
 		},
 		{
 			"appId": "dapr-user-service",
