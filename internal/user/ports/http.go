@@ -39,11 +39,6 @@ func (u UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	httpx.RespSuccess(userDto, w)
 }
 
-type UpdateUserReq struct {
-	Id       int64  `query:"id,required"`
-	UserName string `json:"userName,required"  vd:"len($)>5; msg:sprintf('用户名[%v]必须大于5个字符',$)"`
-}
-
 func (u UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	req := new(UpdateUserReq)
 	if err := httpx.BindAndValidate(req, r); err != nil {
