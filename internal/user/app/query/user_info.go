@@ -20,7 +20,10 @@ func NewUsersInfoHandler(repo domain.UserRepository) UserInfoHandler {
 }
 
 func (u UserInfoHandler) Handler(ctx context.Context, id int64) (User, error) {
-	usersDO, err := u.repo.GetUserById(ctx, id)
+	// usersDO, err := u.repo.GetUserById(ctx, id)
+
+	usersDO, err := u.repo.GetUserFromCache(ctx, id)
+
 	if err != nil {
 		return User{}, err
 	}

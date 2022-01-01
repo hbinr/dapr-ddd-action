@@ -31,20 +31,16 @@ type userRepo struct {
 	logger *zap.Logger
 }
 
-func (u *userRepo) ListUsersPage(ctx context.Context, pageNum, pageSize int) ([]do.User, error) {
+func (u userRepo) ListUsersPage(ctx context.Context, pageNum, pageSize int) ([]do.User, error) {
 	panic("implement me")
 }
 
-func NewUserRepo(logger *zap.Logger) (domain.UserRepository, error) {
-	client, err := dapr.NewClient()
-	if err != nil {
-		return nil, err
-	}
-	return &userRepo{client, logger}, nil
+func NewUserRepo(client dapr.Client, logger *zap.Logger) domain.UserRepository {
+	return &userRepo{client, logger}
 }
 
 // GetUserById 通过 dapr  InvokeBinding API 访问MySQL
-func (u *userRepo) GetUserById(ctx context.Context, id int64) (*do.User, error) {
+func (u userRepo) GetUserById(ctx context.Context, id int64) (*do.User, error) {
 	// 1. 需要自己拼接SQL, 需要注意注入SQL的风险
 	// 2. 另外, 多个SQL一起更新, 事务怎么处理？
 	// 暂时没想到解决上述问题更好的方案
@@ -72,7 +68,7 @@ func (u *userRepo) GetUserById(ctx context.Context, id int64) (*do.User, error) 
 	return resPO[0], nil
 }
 
-func (u *userRepo) UpdateUser(ctx context.Context, user *do.User) error {
+func (u userRepo) UpdateUser(ctx context.Context, user *do.User) error {
 	updateSQL := fmt.Sprintf(`update user set user_name = '%s' where  id = %d`, user.UserName, user.ID)
 
 	in := daprhelp.BuildMySQLExecBinding(constant.MySQLBindName, updateSQL)

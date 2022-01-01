@@ -7,7 +7,6 @@ require (
 	github.com/bytedance/sonic v1.0.0-rc.3
 	github.com/dapr/go-sdk v1.3.1-0.20211229074208-078d0cdc40f2
 	github.com/dapr/kit v0.0.2-0.20210614175626-b9074b64d233
-	github.com/go-chi/render v1.0.1
 	github.com/gorilla/mux v1.8.0
 	github.com/jinzhu/copier v0.3.2
 	github.com/natefinch/lumberjack v2.0.0+incompatible

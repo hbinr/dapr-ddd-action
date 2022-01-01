@@ -1,0 +1,24 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  #  自定义名称
+  name: ddd-action-statestore
+  # 命名空间
+  namespace: ddd-action
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+    - name: redisHost
+      value: localhost:6379
+    - name: redisPassword
+      value: ""
+    - name: actorStateStore
+      value: "true"
+# auth:
+#   secretStore: eshop-secretstore
+# 限制访问特定应用程序，在 ddd-action 命名空间中，你可能希望将 Redis 缓存的访问限制为仅应用程序 user-api 、 order-api
+# scopes:
+#   - user-api
+#   - order-api
+

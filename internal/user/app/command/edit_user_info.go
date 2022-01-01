@@ -7,8 +7,6 @@ import (
 
 	"github.com/dapr-ddd-action/internal/user/domain/do"
 
-	"github.com/dapr-ddd-action/pkg/errorx"
-
 	"github.com/dapr-ddd-action/internal/user/domain"
 )
 
@@ -25,14 +23,18 @@ func NewEditUserInfoHandler(repo domain.UserRepository) EditUserInfoHandler {
 	return EditUserInfoHandler{repo}
 }
 
-func (e EditUserInfoHandler) Handler(ctx context.Context, cmd EditUserInfo) error {
+func (e EditUserInfoHandler) Handler(ctx context.Context, userDto EditUserInfo) error {
 	userDO := new(do.User)
-	if err := copier.Copy(userDO, cmd); err != nil {
+	if err := copier.Copy(userDO, userDto); err != nil {
 		return err
 	}
 
-	if err := e.repo.UpdateUser(ctx, userDO); err != nil {
-		return errorx.NewSlugError(err.Error(), "unable-to-update-user")
+	// if err := e.repo.UpdateUser(ctx, userDO); err != nil {
+	// 	return errorx.NewSlugError(err.Error(), "unable-to-update-user")
+	// }
+
+	if err := e.repo.SaveUserCache(ctx, userDO); err != nil {
+		return err
 	}
 
 	return nil
