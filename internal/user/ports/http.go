@@ -61,5 +61,5 @@ func (u UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	httpx.RespSuccess("OK", w)
+	httpx.RespSuccess(nil, w)
 }
