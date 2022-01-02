@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"appId": "dapr-user-service",
-			"appPort": 8091,
+			"appPort": 3500,
 			"label": "daprd-debug",
 			"type": "daprd",
 			"componentsPath": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/dapr/components",

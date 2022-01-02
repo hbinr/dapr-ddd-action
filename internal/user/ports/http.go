@@ -23,6 +23,7 @@ func RegisterUserRouter(r *mux.Router, app app.Application) {
 	r.HandleFunc("/user", ctl.UpdateUser).Methods(http.MethodPut)
 }
 
+// GerUser 获取用户信息
 func (u UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	id, err := httpx.QueryInt64("id", r)
 	if err != nil {
