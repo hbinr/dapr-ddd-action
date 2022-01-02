@@ -15,10 +15,17 @@ spec:
       value: ""
     - name: actorStateStore
       value: "true"
+    # 指定Redis key的前缀，如果不指定。默认为dapr appliction id，如: "appId": "dapr-user-service"，如果不指定appId,则dapr将生成唯一的appId
+    # 此命名约定允许多个 Dapr 实例共享相同的数据存储，而不会发生key名称冲突。实际在Redis中，key为 : "dapr-user-service-user-state||{really_key}"
+    - name: keyPrefix
+      value: "dapr-user-service-state"
+# auth 认证
 # auth:
 #   secretStore: eshop-secretstore
-# 限制访问特定应用程序，在 ddd-action 命名空间中，你可能希望将 Redis 缓存的访问限制为仅应用程序 user-api 、 order-api
-# scopes:
-#   - user-api
-#   - order-api
+
+# scopes 限制访问特定应用程序，在 ddd-action 命名空间中，你可能希望将 Redis 缓存的访问限制为仅用户服务(appId=dapr-user-service) 可访问
+scopes:
+  - dapr-user-service
+# 可配置多个
+#   - dapr-other-service
 
