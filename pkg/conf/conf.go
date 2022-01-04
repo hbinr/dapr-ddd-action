@@ -7,10 +7,8 @@ type Config struct {
 }
 
 type System struct {
-	StartTime string `mapstructure:"start_time"`
-	MachineID int64  `mapstructure:"machine_id"`
-	Mode      string `mapstructure:"mode"`
-	Port      int    `mapstructure:"port"`
+	Mode string `mapstructure:"mode"`
+	Port int    `mapstructure:"port"`
 }
 
 // LogConfig zap log配置

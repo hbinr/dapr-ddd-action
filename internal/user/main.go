@@ -25,13 +25,14 @@ var defaultConfigFilePath = "./configs/config.yaml"
 
 func main() {
 	client, err := dapr.NewClient()
+
 	if err != nil {
-		log.Fatalf("main: new dapr client error :%v+\n", err)
+		log.Fatalf("main: new dapr client error :%+v\n", err)
 	}
 	defer client.Close()
 
 	if err := initServer(client).Start(); err != nil && err != http.ErrServerClosed {
-		log.Fatalf("main: listening error :%v+\n", err)
+		log.Fatalf("main: listening error :%+v\n", err)
 	}
 }
 
@@ -39,12 +40,12 @@ func main() {
 func initServer(client dapr.Client) daprCommon.Service {
 	appConf, err := conf.Init(defaultConfigFilePath)
 	if err != nil {
-		log.Fatalf("main: init config error: %v+\n", err)
+		log.Fatalf("main: init config error: %+v\n", err)
 	}
 
 	logger, err := zapLogger.InitZap(appConf)
 	if err != nil {
-		log.Fatalf("main: init config zap log error :%v+\n", err)
+		log.Fatalf("main: init config zap log error :%+v\n", err)
 	}
 
 	userRepo := repository.NewUserRepo(client, logger)

@@ -3,11 +3,12 @@
 	"tasks": [
 		{
 			"appId": "dapr-user-service",
-			"appPort": 3500,
+			//  dapr sidecar 监听的端口
+			"appPort": 3501,
+			"appProtocol": "http",
 			"label": "daprd-debug",
 			"type": "daprd",
 			"componentsPath": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/dapr/components",
-			"appProtocol": "http",
 			"logLevel": "debug",
 			// "config": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/internal/user/configs/config.yaml",
 		},

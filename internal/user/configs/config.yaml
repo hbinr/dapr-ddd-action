@@ -1,7 +1,5 @@
 system:
   mode: "release" # test/debug/release
-  start_time: "2021-7-15"
-  machine_id: 1
   port: 8090
 
 log:
