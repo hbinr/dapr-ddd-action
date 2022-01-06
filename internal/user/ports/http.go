@@ -1,9 +1,6 @@
 package ports
 
 import (
-	"fmt"
-	"strconv"
-
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/dapr-ddd-action/internal/user/app"
@@ -27,15 +24,16 @@ func RegisterUserRouter(r *fiber.App, app app.Application) {
 
 // GerUser 获取用户信息
 func (u UserController) GetUser(c *fiber.Ctx) error {
-	idStr := c.Params("id")
-
-	id, err := strconv.ParseInt(idStr, 10, 64)
+	id, err := c.ParamsInt("id")
 	if err != nil {
-		return errorx.BadRequest("invalid id=%s", idStr)
+		return errorx.BadRequest(err.Error())
 	}
 
-	fmt.Println("c.Context()", c.Context())
-	userDto, err := u.app.Queries.UserInfo.Handler(c.Context(), id)
+	if id == 0 {
+		return errorx.BadRequest("id is zero")
+	}
+
+	userDto, err := u.app.Queries.UserInfo.Handler(c.Context(), int64(id))
 	if err != nil {
 		return err
 	}
