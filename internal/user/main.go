@@ -3,57 +3,79 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/dapr-ddd-action/internal/user/ports"
+	"github.com/gofiber/fiber/v2"
 
 	"github.com/dapr-ddd-action/internal/user/service"
 
-	"github.com/gorilla/mux"
-
 	"github.com/dapr-ddd-action/internal/user/adapters/repository"
 	"github.com/dapr-ddd-action/pkg/conf"
+	"github.com/dapr-ddd-action/pkg/errorx"
 	zapLogger "github.com/dapr-ddd-action/pkg/loggger"
 
-	daprCommon "github.com/dapr/go-sdk/service/common"
-
 	dapr "github.com/dapr/go-sdk/client"
-	daprd "github.com/dapr/go-sdk/service/http"
 )
 
 var defaultConfigFilePath = "./configs/config.yaml"
 
 func main() {
+	// init dapr client
 	client, err := dapr.NewClient()
 
 	if err != nil {
 		log.Fatalf("main: new dapr client error :%+v\n", err)
 	}
-	defer client.Close()
 
-	if err := initServer(client).Start(); err != nil && err != http.ErrServerClosed {
-		log.Fatalf("main: listening error :%+v\n", err)
-	}
-}
-
-// initServer 初识化服务
-func initServer(client dapr.Client) daprCommon.Service {
+	// init config
 	appConf, err := conf.Init(defaultConfigFilePath)
 	if err != nil {
 		log.Fatalf("main: init config error: %+v\n", err)
 	}
 
+	// init logger
 	logger, err := zapLogger.InitZap(appConf)
 	if err != nil {
 		log.Fatalf("main: init config zap log error :%+v\n", err)
 	}
 
+	// init bussiness
 	userRepo := repository.NewUserRepo(client, logger)
+	application := service.NewApplication(userRepo)
 
-	app := service.NewApplication(userRepo)
-	router := mux.NewRouter()
-	ports.RegisterUserRouter(router, app)
+	// init fiber
+	config := fiber.Config{
+		DisableStartupMessage: true,
+		// custom error handler
+		ErrorHandler: func(c *fiber.Ctx, err error) error {
+			errx := errorx.From(err)
+			return c.Status(errx.Code).JSON(err)
+		},
+	}
+	app := fiber.New(config)
+	ports.RegisterUserRouter(app, application)
 
-	server := daprd.NewServiceWithMux(fmt.Sprintf(":%d", appConf.Port), router)
-	return server
+	// start server
+	if err := app.Listen(fmt.Sprintf(":%d", appConf.Port)); err != nil {
+		app.Shutdown()
+	}
+	go func() {
+		if err := app.Listen(fmt.Sprintf(":%d", appConf.Port)); err != nil {
+			log.Panic(err)
+		}
+	}()
+
+	c := make(chan os.Signal, 1)                    // Create channel to signify a signal being sent
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM) // When an interrupt or termination signal is sent, notify the channel
+
+	<-c
+	fmt.Println("Gracefully shutting down...")
+	_ = app.Shutdown()
+
+	client.Close()
+	fmt.Println("Fiber was successful shutdown.")
+
 }

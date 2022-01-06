@@ -29,13 +29,13 @@ func (e EditUserInfoHandler) Handler(ctx context.Context, userDto EditUserInfo) 
 		return err
 	}
 
-	// if err := e.repo.UpdateUser(ctx, userDO); err != nil {
-	// 	return errorx.NewSlugError(err.Error(), "unable-to-update-user")
-	// }
-
-	if err := e.repo.SaveUserCache(ctx, userDO); err != nil {
+	if err := e.repo.UpdateUser(ctx, userDO); err != nil {
 		return err
 	}
+
+	// if err := e.repo.SaveUserCache(ctx, userDO); err != nil {
+	// 	return err
+	// }
 
 	return nil
 }

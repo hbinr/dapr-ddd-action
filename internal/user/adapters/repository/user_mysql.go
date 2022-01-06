@@ -9,18 +9,14 @@ import (
 	"github.com/dapr-ddd-action/internal/pkg/constant"
 	"github.com/dapr-ddd-action/internal/user/domain"
 	"github.com/dapr-ddd-action/internal/user/domain/do"
-	"github.com/dapr-ddd-action/pkg/errorx"
 
+	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/jsonx"
 
 	"go.uber.org/zap"
 
 	"github.com/dapr-ddd-action/pkg/daprhelp"
 	dapr "github.com/dapr/go-sdk/client"
-)
-
-var (
-	ErrUserNotFound = errorx.NewConvertDataError("user is not found", "user-not-found")
 )
 
 // 入参 do -> po
@@ -57,7 +53,7 @@ func (u userRepo) GetUserById(ctx context.Context, id int64) (*do.User, error) {
 	// 必须这样判断返回的数据是否为空, 因为此处 err 返回为nil, 但是 data 为空. 太丑了~
 	if string(out.Data) == "null" {
 		u.logger.Error("user not found", zap.Error(err), zap.Int64("id", id))
-		return nil, ErrUserNotFound
+		return nil, errorx.NotFound("mysql: id=%d", id)
 	}
 	// out.Data 返回类型为数组
 	var resPO []*do.User
@@ -76,8 +72,8 @@ func (u userRepo) UpdateUser(ctx context.Context, user *do.User) error {
 	_, err := u.client.InvokeBinding(ctx, in)
 
 	if err != nil {
-		u.logger.Error("UpdateUser failed", zap.Error(err))
-		return err
+		u.logger.Error("UpdateUser failed", zap.Error(err), zap.String("sql", updateSQL))
+		return errorx.Internal(err, "UpdateUser failed")
 	}
 
 	return nil

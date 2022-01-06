@@ -1,15 +1,15 @@
 package ports
 
 import (
-	"net/http"
-	"strings"
+	"fmt"
+	"strconv"
 
-	"github.com/gorilla/mux"
-
-	"github.com/dapr-ddd-action/internal/user/app/command"
+	"github.com/gofiber/fiber/v2"
 
 	"github.com/dapr-ddd-action/internal/user/app"
+	"github.com/dapr-ddd-action/internal/user/app/command"
 
+	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/httpx"
 )
 
@@ -17,50 +17,48 @@ type UserController struct {
 	app app.Application
 }
 
-func RegisterUserRouter(r *mux.Router, app app.Application) {
+func RegisterUserRouter(r *fiber.App, app app.Application) {
+	group := r.Group("/user")
 	ctl := UserController{app}
-	r.HandleFunc("/user/{id}", ctl.GetUser).Methods(http.MethodGet)
-	r.HandleFunc("/user", ctl.UpdateUser).Methods(http.MethodPut)
+
+	group.Get("/:id", ctl.GetUser)
+	group.Put("/", ctl.UpdateUser)
 }
 
 // GerUser 获取用户信息
-func (u UserController) GetUser(w http.ResponseWriter, r *http.Request) {
-	id, err := httpx.QueryInt64("id", r)
+func (u UserController) GetUser(c *fiber.Ctx) error {
+	idStr := c.Params("id")
+
+	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
-		httpx.BadRequest("invalid-id", "invalid-id", err, w)
-		return
+		return errorx.BadRequest("invalid id=%s", idStr)
 	}
 
-	userDto, err := u.app.Queries.UserInfo.Handler(r.Context(), id)
+	fmt.Println("c.Context()", c.Context())
+	userDto, err := u.app.Queries.UserInfo.Handler(c.Context(), id)
 	if err != nil {
-		httpx.RespWithError(err, "服务器开小差了，请稍后再试", w)
-		return
+		return err
 	}
-	httpx.RespSuccess(userDto, w)
+
+	// 看前端需要怎样的数据结构，可能需要固定的数据结构，前端取值可能是:res.data.code / res.data.data
+	// 如果是我开发前端，那么这里可以直接返回json，即 c.JSON(userDto) . 前端取值是: res.code / res.data
+	return c.JSON(httpx.RespSuccess(userDto))
 }
 
-func (u UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
+func (u UserController) UpdateUser(c *fiber.Ctx) error {
 	req := new(UpdateUserReq)
-	if err := httpx.BindAndValidate(req, r); err != nil {
-		// 特殊处理 go-tagexpr  参数验证错误, 友好提示给用户
-		msg := strings.Split(err.Error(), "cause=")[1]
-		httpx.BadRequest("invalid-request", msg, err, w)
-		return
-	}
-	if req.ID == 0 {
-		httpx.BadRequest("invalid-request", "invalid id", nil, w)
-		return
+
+	if err := httpx.ParseAndValidate(c, req); err != nil {
+		return errorx.BadRequest(err.Error())
 	}
 
-	editUserInfo := command.EditUserInfo{
+	if err := u.app.Commands.EditUserInfo.Handler(c.Context(), command.EditUserInfo{
 		ID:       req.ID,
 		UserName: req.UserName,
+	}); err != nil {
+		return err
 	}
 
-	if err := u.app.Commands.EditUserInfo.Handler(r.Context(), editUserInfo); err != nil {
-		httpx.RespWithError(err, "服务器开小差了，请稍后再试", w)
-		return
-	}
-
-	httpx.RespSuccess(nil, w)
+	// return c.JSON(httpx.RespSuccess(nil))
+	return nil
 }
