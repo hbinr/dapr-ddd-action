@@ -20,3 +20,7 @@
 - 如果也是使用dapr写的，那么在调用时是通过 Dapr 提供的API来调用，每个 dapr sidecar之间是走的 grpc 协议
 - 如果不是，那么http服务就通过访问 http 接口来调用； grpc服务需要使用别人提供的 proto 文件，在本地生成对应的调用 client ，然后再调用对应的方法即可
 
+## gorm-gen SQL生成命令
+```
+gentool -dsn "root:123456@tcp(127.0.0.1:3306)/study?charset=utf8mb4&parseTime=True&loc=Local" -tables "user" -outPath "./data/dao" -modelPkgName "entity" 
+```

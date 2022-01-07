@@ -8,21 +8,17 @@ import (
 )
 
 type UserInfoHandler struct {
-	repo domain.UserRepository
+	service domain.UserService
 }
 
-func NewUsersInfoHandler(repo domain.UserRepository) UserInfoHandler {
-	if repo == nil {
-		panic("nil domain.UserRepository")
-	}
-
-	return UserInfoHandler{repo}
+func NewUsersInfoHandler(service domain.UserService) UserInfoHandler {
+	return UserInfoHandler{service}
 }
 
 func (u UserInfoHandler) Handler(ctx context.Context, id int64) (User, error) {
-	// usersDO, err := u.repo.GetUserById(ctx, id)
+	usersDO, err := u.service.GetUserById(ctx, id)
 
-	usersDO, err := u.repo.GetUserFromCache(ctx, id)
+	// usersDO, err := u.service.GetUserFromCache(ctx, id)
 
 	if err != nil {
 		return User{}, err

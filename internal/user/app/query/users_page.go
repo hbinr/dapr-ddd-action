@@ -8,20 +8,18 @@ import (
 	"github.com/dapr-ddd-action/internal/user/domain"
 )
 
+// 入参 dto -> do
+// 出参 do -> dto
 type UsersPageHandler struct {
-	repo domain.UserRepository
+	service domain.UserService
 }
 
-func NewUsersPageHandler(repo domain.UserRepository) UsersPageHandler {
-	if repo == nil {
-		panic("nil domain.UserRepository")
-	}
-
-	return UsersPageHandler{repo}
+func NewUsersPageHandler(service domain.UserService) UsersPageHandler {
+	return UsersPageHandler{service}
 }
 
 func (u UsersPageHandler) Handler(ctx context.Context, pageNum, pageSize int) ([]User, error) {
-	usersDO, err := u.repo.ListUsersPage(ctx, pageNum, pageSize)
+	usersDO, err := u.service.ListUsersPage(ctx, pageNum, pageSize)
 	if err != nil {
 		return nil, err
 	}

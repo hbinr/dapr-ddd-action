@@ -92,8 +92,10 @@ ReservationResource在接收到以 JSON 格式传递的前端请求后，将其�
 
 
 
-调用链：
-> main -> port -> application  -> adapters(infrastructure) -> domain
+本项目调用链：
+> main -> ports -> application -> domain (调用领域服务)
+
+其中，领域服务中数据读写的实际逻辑是在 adapters 实现
 
 参考：
 - https://zhuanlan.zhihu.com/p/401604739 DDD落地指南

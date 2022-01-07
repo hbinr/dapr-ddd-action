@@ -5,31 +5,31 @@ import (
 
 	"github.com/jinzhu/copier"
 
-	"github.com/dapr-ddd-action/internal/user/domain/do"
+	"github.com/dapr-ddd-action/internal/user/domain/aggregate"
 
 	"github.com/dapr-ddd-action/internal/user/domain"
 )
 
+// 入参 dto -> do
+// 出参 do -> dto
+
 // EditUserInfoHandler 业务编排
 type EditUserInfoHandler struct {
-	repo domain.UserRepository
+	service domain.UserService
 }
 
-func NewEditUserInfoHandler(repo domain.UserRepository) EditUserInfoHandler {
-	if repo == nil {
-		panic("nil domain.UserRepository")
-	}
+func NewEditUserInfoHandler(service domain.UserService) EditUserInfoHandler {
 
-	return EditUserInfoHandler{repo}
+	return EditUserInfoHandler{service}
 }
 
 func (e EditUserInfoHandler) Handler(ctx context.Context, userDto EditUserInfo) error {
-	userDO := new(do.User)
+	userDO := new(aggregate.User)
 	if err := copier.Copy(userDO, userDto); err != nil {
 		return err
 	}
 
-	if err := e.repo.UpdateUser(ctx, userDO); err != nil {
+	if err := e.service.UpdateUser(ctx, userDO); err != nil {
 		return err
 	}
 

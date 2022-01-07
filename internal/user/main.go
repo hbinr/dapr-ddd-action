@@ -7,10 +7,10 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/dapr-ddd-action/internal/user/app"
+	"github.com/dapr-ddd-action/internal/user/domain"
 	"github.com/dapr-ddd-action/internal/user/ports"
 	"github.com/gofiber/fiber/v2"
-
-	"github.com/dapr-ddd-action/internal/user/service"
 
 	"github.com/dapr-ddd-action/internal/user/adapters/repository"
 	"github.com/dapr-ddd-action/pkg/conf"
@@ -44,7 +44,8 @@ func main() {
 
 	// init bussiness
 	userRepo := repository.NewUserRepo(client, logger)
-	application := service.NewApplication(userRepo)
+	userDomain := domain.NewUserDomain(userRepo)
+	application := app.NewApplication(userDomain)
 
 	// init fiber
 	config := fiber.Config{

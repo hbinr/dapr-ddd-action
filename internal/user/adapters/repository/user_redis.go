@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/dapr-ddd-action/internal/user/domain/do"
+	"github.com/dapr-ddd-action/internal/user/domain/data/entity"
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/jsonx"
 )
 
-func (u userRepo) SaveUserCache(ctx context.Context, user *do.User) error {
+func (u userRepo) SaveUserCache(ctx context.Context, key string, user *entity.User) error {
 	storeName := "ddd-action-statestore"
 
 	data, err := jsonx.Marshal(user)
@@ -17,23 +17,23 @@ func (u userRepo) SaveUserCache(ctx context.Context, user *do.User) error {
 		return err
 	}
 
-	if err := u.client.SaveState(ctx, storeName, user.GetUserInfoKey(user.ID), data); err != nil {
+	if err := u.client.SaveState(ctx, storeName, key, data); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u userRepo) GetUserFromCache(ctx context.Context, id int64) (userDO *do.User, err error) {
+func (u userRepo) GetUserFromCache(ctx context.Context, key string) (userDO *entity.User, err error) {
 	storeName := "ddd-action-statestore"
 
-	userDO = new(do.User)
-	item, err := u.client.GetState(ctx, storeName, userDO.GetUserInfoKey(id))
+	userDO = new(entity.User)
+	item, err := u.client.GetState(ctx, storeName, key)
 	if err != nil {
 		return
 	}
 
 	if item.Value == nil {
-		err = errorx.NotFound("redis: id=%d", id)
+		err = errorx.NotFound("redis: GetUser key=%s", key)
 		return
 	}
 
