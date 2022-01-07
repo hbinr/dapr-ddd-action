@@ -95,6 +95,25 @@ ReservationResource在接收到以 JSON 格式传递的前端请求后，将其�
 调用链：
 > main -> port -> application  -> adapters(infrastructure) -> domain
 
+备注：
+
+domain 不调用 repository，而是 application 调用repository
+
+
+原因摘自 [DDD系列 第三讲 - Repository模式](https://mp.weixin.qq.com/s/1bcymUcjCkOdvVygunShmw):
+```text
+领域服务是否能直接调用Repositoty层，这样的话感觉更内聚。
+
+Domain Service不应该直接调用Repository(以及其他的跨网络调用)，哪怕Repository Interface是在Domain层。我们需要看一下DomainService的核心目的:封装业务逻辑(也就是各种规则)，而不是业务流程。
+
+也就是说DomainService天生是Stateless的纯内存操作。DomainService的所有入参都必须是上层调用方提前查出来给予的(也就是ApplicationService的职责)。
+
+至于说“更内聚”，其实是有问题的，等于是在业务逻辑上加入了一个外部依赖，如果Repo有问题，你的Domain层都会出问题，连业务逻辑正确性都无法验证。如果说要问“内聚”应该关注啥，我认为应该关注的是Application层的边界。
+
+对外部来说Application层就是一个领域BoundedContext的边界，在这里面的都是内聚的，而外部只需要关注Application接口的入参/出参即可
+```
+
+
 参考：
 - https://zhuanlan.zhihu.com/p/401604739 DDD落地指南
 - https://blog.csdn.net/u012921921/category_11421961.html
