@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/dapr-ddd-action/internal/user/domain/data/entity"
+	"github.com/dapr-ddd-action/internal/user/domain/data/po"
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/jsonx"
 )
 
-func (u userRepo) SaveUserCache(ctx context.Context, key string, user *entity.User) error {
+func (u userRepo) SaveUserCache(ctx context.Context, key string, user *po.User) error {
 	storeName := "ddd-action-statestore"
 
 	data, err := jsonx.Marshal(user)
@@ -23,10 +23,10 @@ func (u userRepo) SaveUserCache(ctx context.Context, key string, user *entity.Us
 	return nil
 }
 
-func (u userRepo) GetUserFromCache(ctx context.Context, key string) (userDO *entity.User, err error) {
+func (u userRepo) GetUserFromCache(ctx context.Context, key string) (userDO *po.User, err error) {
 	storeName := "ddd-action-statestore"
 
-	userDO = new(entity.User)
+	userDO = new(po.User)
 	item, err := u.client.GetState(ctx, storeName, key)
 	if err != nil {
 		return

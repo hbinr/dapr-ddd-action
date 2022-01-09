@@ -5,7 +5,8 @@
 你必须使你的内部结构适应外部 API 所期望的东西，想象一下： 
 - SQL 查询
   - repository 接口实现，比如MySQL的CURD
-  - 数据模型 entity 定义？
+  - 数据模型 po 定义？
+- 缓存
 - HTTP 或 gRPC 客户端
   - http: 直接调 http 接口即可
   - gRPC: 使用别人提供的 proto 文件，在本地生成对应的调用 client 
@@ -22,5 +23,5 @@
 
 ## gorm-gen SQL生成命令
 ```
-gentool -dsn "root:123456@tcp(127.0.0.1:3306)/study?charset=utf8mb4&parseTime=True&loc=Local" -tables "user" -outPath "./data/dao" -modelPkgName "entity" 
+gentool -dsn "root:123456@tcp(127.0.0.1:3306)/study?charset=utf8mb4&parseTime=True&loc=Local" -tables "user" -outPath "./data/dao" -modelPkgName "po" 
 ```

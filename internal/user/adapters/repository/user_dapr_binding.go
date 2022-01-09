@@ -8,7 +8,7 @@ import (
 
 	"github.com/dapr-ddd-action/internal/pkg/constant"
 	"github.com/dapr-ddd-action/internal/user/domain"
-	"github.com/dapr-ddd-action/internal/user/domain/data/entity"
+	"github.com/dapr-ddd-action/internal/user/domain/data/po"
 
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/jsonx"
@@ -32,7 +32,7 @@ func NewUserRepo(client dapr.Client, logger *zap.Logger) domain.UserRepository {
 }
 
 // GetUserById 通过 dapr  InvokeBinding API 访问MySQL
-func (u userRepo) GetUserById(ctx context.Context, id int64) (*entity.User, error) {
+func (u userRepo) GetUserById(ctx context.Context, id int64) (*po.User, error) {
 	// 1. 需要自己拼接SQL, 需要注意注入SQL的风险
 	// 2. 另外, 多个SQL一起更新, 事务怎么处理？
 	// 暂时没想到解决上述问题更好的方案
@@ -52,7 +52,7 @@ func (u userRepo) GetUserById(ctx context.Context, id int64) (*entity.User, erro
 		return nil, errorx.NotFound("mysql: id=%d", id)
 	}
 	// out.Data 返回类型为数组
-	var resPO []*entity.User
+	var resPO []*po.User
 	if err = jsonx.Unmarshal(out.Data, &resPO); err != nil {
 		return nil, errors.Wrap(err, "unmarshal user failed")
 	}
@@ -60,7 +60,7 @@ func (u userRepo) GetUserById(ctx context.Context, id int64) (*entity.User, erro
 	return resPO[0], nil
 }
 
-func (u userRepo) UpdateUser(ctx context.Context, user *entity.User) error {
+func (u userRepo) UpdateUser(ctx context.Context, user *po.User) error {
 	updateSQL := fmt.Sprintf(`update user set user_name = '%s' where  id = %d`, user.UserName, user.ID)
 
 	in := daprhelp.BuildMySQLExecBinding(constant.MySQLBindName, updateSQL)
@@ -75,6 +75,6 @@ func (u userRepo) UpdateUser(ctx context.Context, user *entity.User) error {
 	return nil
 }
 
-func (u userRepo) ListUsersPage(ctx context.Context, pageNum, pageSize int) ([]entity.User, error) {
+func (u userRepo) ListUsersPage(ctx context.Context, pageNum, pageSize int) ([]po.User, error) {
 	panic("implement me")
 }

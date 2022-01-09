@@ -10,7 +10,7 @@ import (
 	"github.com/dapr-ddd-action/internal/user/domain"
 )
 
-// 入参 dto -> do
+// 入参 cmd
 // 出参 do -> dto
 
 // EditUserInfoHandler 业务编排
@@ -23,9 +23,12 @@ func NewEditUserInfoHandler(service domain.UserService) EditUserInfoHandler {
 	return EditUserInfoHandler{service}
 }
 
-func (e EditUserInfoHandler) Handler(ctx context.Context, userDto EditUserInfo) error {
+//         return orderDtoAssembler.orderToDTO(savedOrder);
+
+func (e EditUserInfoHandler) Handler(ctx context.Context, cmd EditUserInfoCmd) error {
+	//
 	userDO := new(aggregate.User)
-	if err := copier.Copy(userDO, userDto); err != nil {
+	if err := copier.Copy(userDO, cmd); err != nil {
 		return err
 	}
 

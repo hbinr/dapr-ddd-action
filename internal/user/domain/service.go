@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/dapr-ddd-action/internal/user/domain/aggregate"
-	"github.com/dapr-ddd-action/internal/user/domain/data/entity"
+	"github.com/dapr-ddd-action/internal/user/domain/data/po"
 	"github.com/jinzhu/copier"
 )
 
@@ -59,7 +59,7 @@ func (u *UserService) GetUserFromCache(ctx context.Context, id int64) (*aggregat
 // UpdateUser 修改 user
 
 func (u *UserService) UpdateUser(ctx context.Context, userDO *aggregate.User) error {
-	userPO := &entity.User{}
+	userPO := &po.User{}
 	if err := copier.Copy(userPO, userDO); err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func (u *UserService) UpdateUser(ctx context.Context, userDO *aggregate.User) er
 // 	}
 // }]
 func (u *UserService) SaveUser(ctx context.Context, userDO *aggregate.User) error {
-	userPO := &entity.User{}
+	userPO := &po.User{}
 	if err := copier.Copy(userPO, userDO); err != nil {
 		return err
 	}

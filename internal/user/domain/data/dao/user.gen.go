@@ -7,7 +7,7 @@ package dao
 import (
 	"context"
 
-	"github.com/dapr-ddd-action/internal/user/domain/data/entity"
+	"github.com/dapr-ddd-action/internal/user/domain/data/po"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -20,7 +20,7 @@ func newUser(db *gorm.DB) user {
 	_user := user{}
 
 	_user.userDo.UseDB(db)
-	_user.userDo.UseModel(&entity.User{})
+	_user.userDo.UseModel(&po.User{})
 
 	tableName := _user.userDo.TableName()
 	_user.ALL = field.NewField(tableName, "*")
@@ -187,57 +187,57 @@ func (u userDo) Unscoped() *userDo {
 	return u.withDO(u.DO.Unscoped())
 }
 
-func (u userDo) Create(values ...*entity.User) error {
+func (u userDo) Create(values ...*po.User) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return u.DO.Create(values)
 }
 
-func (u userDo) CreateInBatches(values []*entity.User, batchSize int) error {
+func (u userDo) CreateInBatches(values []*po.User, batchSize int) error {
 	return u.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (u userDo) Save(values ...*entity.User) error {
+func (u userDo) Save(values ...*po.User) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return u.DO.Save(values)
 }
 
-func (u userDo) First() (*entity.User, error) {
+func (u userDo) First() (*po.User, error) {
 	if result, err := u.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*entity.User), nil
+		return result.(*po.User), nil
 	}
 }
 
-func (u userDo) Take() (*entity.User, error) {
+func (u userDo) Take() (*po.User, error) {
 	if result, err := u.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*entity.User), nil
+		return result.(*po.User), nil
 	}
 }
 
-func (u userDo) Last() (*entity.User, error) {
+func (u userDo) Last() (*po.User, error) {
 	if result, err := u.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*entity.User), nil
+		return result.(*po.User), nil
 	}
 }
 
-func (u userDo) Find() ([]*entity.User, error) {
+func (u userDo) Find() ([]*po.User, error) {
 	result, err := u.DO.Find()
-	return result.([]*entity.User), err
+	return result.([]*po.User), err
 }
 
-func (u userDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*entity.User, err error) {
-	buf := make([]*entity.User, 0, batchSize)
+func (u userDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*po.User, err error) {
+	buf := make([]*po.User, 0, batchSize)
 	err = u.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -245,7 +245,7 @@ func (u userDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error)
 	return results, err
 }
 
-func (u userDo) FindInBatches(result *[]*entity.User, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (u userDo) FindInBatches(result *[]*po.User, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return u.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -265,23 +265,23 @@ func (u userDo) Preload(field field.RelationField) *userDo {
 	return u.withDO(u.DO.Preload(field))
 }
 
-func (u userDo) FirstOrInit() (*entity.User, error) {
+func (u userDo) FirstOrInit() (*po.User, error) {
 	if result, err := u.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*entity.User), nil
+		return result.(*po.User), nil
 	}
 }
 
-func (u userDo) FirstOrCreate() (*entity.User, error) {
+func (u userDo) FirstOrCreate() (*po.User, error) {
 	if result, err := u.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*entity.User), nil
+		return result.(*po.User), nil
 	}
 }
 
-func (u userDo) FindByPage(offset int, limit int) (result []*entity.User, count int64, err error) {
+func (u userDo) FindByPage(offset int, limit int) (result []*po.User, count int64, err error) {
 	count, err = u.Count()
 	if err != nil {
 		return

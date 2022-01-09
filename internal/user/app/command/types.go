@@ -1,6 +1,6 @@
 package command
 
-type EditUserInfo struct {
+type EditUserInfoCmd struct {
 	ID       int64  `json:"id,omitempty"`
 	UserID   string `json:"user_id,omitempty"`
 	UserName string `json:"user_name,omitempty"`
