@@ -4,6 +4,7 @@ package conf
 type Config struct {
 	System    `mapstructure:"system"`
 	LogConfig `mapstructure:"log"`
+	Database  `mapstructure:"database"`
 }
 
 type System struct {
@@ -19,4 +20,12 @@ type LogConfig struct {
 	MaxSize    int    `mapstructure:"max_size"`
 	MaxAge     int    `mapstructure:"max_age"`
 	MaxBackups int    `mapstructure:"max_backups"`
+}
+
+type Database struct {
+	Driver       string `mapstructure:"driver"`
+	Source       string `mapstructure:"source"`
+	LogMode      bool   `mapstructure:"log_mode"`
+	MaxIdleConns int    `mapstructure:"max_idle_conns"`
+	MaxOpenConns int    `mapstructure:"max_open_conns"`
 }

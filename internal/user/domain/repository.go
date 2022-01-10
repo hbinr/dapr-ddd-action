@@ -10,10 +10,10 @@ import (
 
 type UserRepository interface {
 	// ListUsersPage 分页查询 user
-	ListUsersPage(ctx context.Context, pageNum, pageSize int) ([]po.User, error)
+	ListUsersPage(ctx context.Context, pageNum, pageSize int) ([]*po.User, error)
 	GetUserById(context.Context, int64) (*po.User, error)
-	// UpdateUser 修改 user
-	UpdateUser(context.Context, *po.User) error
+	// SaveUser 修改 user
+	SaveUser(context.Context, *po.User) error
 
 	// GetUserFromCache 获取 user(查询缓存)
 	// Dapr 底层调用 GET 请求: http://127.0.0.1:3500/v1.0/state/ddd-action-statestore/user:info6

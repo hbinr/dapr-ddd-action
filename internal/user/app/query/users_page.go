@@ -18,7 +18,7 @@ func NewUsersPageHandler(service domain.UserService) UsersPageHandler {
 }
 
 func (u UsersPageHandler) Handler(ctx context.Context, query UsersPageQuery) ([]assemble.UserDTO, error) {
-	usersDO, err := u.service.ListUsersPage(ctx, query.CurrentPage, query.PageSize)
+	usersDO, err := u.service.ListUsersPage(ctx, query.GetCurrentPage(), query.GetPageSize())
 	if err != nil {
 		return nil, err
 	}

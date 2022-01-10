@@ -46,7 +46,7 @@ func (u UserController) GetUser(c *fiber.Ctx) error {
 }
 
 func (u UserController) UpdateUser(c *fiber.Ctx) error {
-	req := new(UpdateUserReq)
+	req := new(command.EditUserInfoCmd)
 
 	if err := httpx.ParseAndValidate(c, req); err != nil {
 		return errorx.BadRequest(err.Error())

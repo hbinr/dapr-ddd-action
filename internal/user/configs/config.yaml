@@ -9,3 +9,10 @@ log:
   max_size: 200
   max_age: 30
   max_backups: 7
+
+database:
+  driver: mysql
+  source: root:123456@tcp(127.0.0.1:3306)/study?charset=utf8mb4&parseTime=true&loc=Local
+  log_mode: true
+  max_open_conns: 10
+  max_idle_conns: 10

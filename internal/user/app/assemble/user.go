@@ -1,15 +1,23 @@
 package assemble
 
-import "github.com/dapr-ddd-action/internal/user/domain/aggregate"
+import (
+	"github.com/dapr-ddd-action/internal/user/domain/aggregate"
+	"github.com/dapr-ddd-action/pkg/util/timex"
+)
 
 type UserDTO struct {
-	ID       int64  `json:"id,omitempty"`
-	UserName string `json:"userName,omitempty"`
+	ID        int64  `json:"id"`
+	Age       int    `json:"age"`
+	UserName  string `json:"userName"`
+	CreatedAt string `json:"createTime"`
+	UpdatedAt string `json:"updateTime"`
 }
 
 func UserToDTO(user *aggregate.User) UserDTO {
 	return UserDTO{
-		ID:       user.ID,
-		UserName: user.UserName,
+		ID:        user.ID,
+		UserName:  user.UserName,
+		CreatedAt: timex.DateToString(user.CreatedAt),
+		UpdatedAt: timex.DateToString(user.UpdatedAt),
 	}
 }

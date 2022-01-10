@@ -7,14 +7,17 @@ import (
 	"os/signal"
 	"syscall"
 
+	file2 "github.com/dapr-ddd-action/pkg/util/file"
+
 	"github.com/dapr-ddd-action/internal/user/app"
 	"github.com/dapr-ddd-action/internal/user/domain"
+	"github.com/dapr-ddd-action/internal/user/domain/data/dao"
 	"github.com/dapr-ddd-action/internal/user/ports"
 	"github.com/dapr-ddd-action/internal/user/server"
 
 	"github.com/dapr-ddd-action/internal/user/adapters/repository"
 	"github.com/dapr-ddd-action/pkg/conf"
-	"github.com/dapr-ddd-action/pkg/file"
+	"github.com/dapr-ddd-action/pkg/database"
 	zapLogger "github.com/dapr-ddd-action/pkg/loggger"
 
 	dapr "github.com/dapr/go-sdk/client"
@@ -29,7 +32,7 @@ func main() {
 		log.Fatalf("main: new dapr client error :%+v\n", err)
 	}
 
-	if path := file.GetCurrentPath(); path != "" {
+	if path := file2.GetCurrentPath(); path != "" {
 		defaultConfigFilePath = path + "/configs/config.yaml"
 	}
 
@@ -39,8 +42,11 @@ func main() {
 	// init logger
 	logger := zapLogger.InitZap(appConf)
 
+	// init gorm client
+	gormClient := dao.Use(database.Init(&appConf.Database))
+
 	// init bussiness
-	userRepo := repository.NewUserRepo(client, logger)
+	userRepo := repository.NewUserRepo(client, logger, gormClient)
 	userDomain := domain.NewUserDomain(userRepo)
 	userApp := app.NewApplication(userDomain)
 	userController := ports.NewUserController(userApp)

@@ -64,7 +64,7 @@ func (u *UserService) UpdateUser(ctx context.Context, userDO *aggregate.User) er
 		return err
 	}
 
-	return u.repo.UpdateUser(ctx, userPO)
+	return u.repo.SaveUser(ctx, userPO)
 }
 
 // SaveUserCache 保存 user(缓存)
