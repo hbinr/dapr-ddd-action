@@ -14,12 +14,14 @@ type UserController struct {
 	app app.Application
 }
 
-func RegisterUserRouter(r *fiber.App, app app.Application) {
-	group := r.Group("/user")
-	ctl := UserController{app}
+func NewUserController(app app.Application) *UserController {
+	return &UserController{app: app}
+}
 
-	group.Get("/:id", ctl.GetUser)
-	group.Put("/", ctl.UpdateUser)
+func (u *UserController) RegisterHTTPRouter(r *fiber.App) {
+	group := r.Group("/user")
+	group.Get("/:id", u.GetUser)
+	group.Put("/", u.UpdateUser)
 }
 
 // GerUser 获取用户信息

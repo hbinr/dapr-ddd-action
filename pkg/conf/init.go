@@ -1,28 +1,32 @@
 package conf
 
 import (
+	"log"
 	"os"
 
 	"github.com/dapr/kit/config"
 	"gopkg.in/yaml.v3"
 )
 
-func Init(filePath string) (conf *Config, err error) {
-	var data []byte
+func Init(filePath string) (conf *Config) {
+	var (
+		data []byte
+		err  error
+	)
 
 	if data, err = os.ReadFile(filePath); err != nil {
-		return
+		log.Fatalln("conf: os.ReadFile failed,err:", err)
 	}
 
 	cfg := make(map[string]interface{})
 
 	if err = yaml.Unmarshal(data, cfg); err != nil {
-		return
+		log.Fatalln("conf: yaml.Unmarshal failed, err:", err)
 	}
 
 	conf = new(Config)
 	if err = config.Decode(cfg, conf); err != nil {
-		return
+		log.Fatalln("conf: config.Decode failed, err: ", err)
 	}
 
 	return

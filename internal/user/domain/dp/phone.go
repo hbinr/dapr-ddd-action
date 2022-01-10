@@ -36,6 +36,7 @@ func (p poneNumber) isValid() bool {
 	// 正则匹配是否符合电话格式
 	return true
 }
+
 func isAreaCode(prefix string) bool {
 	areas := []string{"0571", "021", "010"}
 	for _, item := range areas {

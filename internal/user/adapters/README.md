@@ -5,7 +5,6 @@
 你必须使你的内部结构适应外部 API 所期望的东西，想象一下： 
 - SQL 查询
   - repository 接口实现，比如MySQL的CURD
-  - 数据模型 po 定义？
 - 缓存
 - HTTP 或 gRPC 客户端
   - http: 直接调 http 接口即可
@@ -13,6 +12,10 @@
 - 文件读写器
 - Pub/Sub 消息发布器
 
+**疑惑点：**
+- SQL操作和Cache操作是写到 Repository 同一个方法中还是不同的方法？
+  - 单独写的话，原子性更好点
+  - 合在一起写的话更符合 DDD Repository 中设计，收敛底层数据操作
 ## 使用 dapr 后，该层作用？
 
 使用 Dapr 编写应用后，只要项目(简称A项目)启动，就会创建一个 dapr sidecar，项目的服务也就发布了

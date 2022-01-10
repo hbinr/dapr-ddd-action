@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/dapr-ddd-action/pkg/conf"
@@ -11,7 +11,7 @@ import (
 )
 
 // InitZap 初始化 zap Logger
-func InitZap(cfg *conf.Config) (logger *zap.Logger, err error) {
+func InitZap(cfg *conf.Config) (logger *zap.Logger) {
 	var (
 		l    zapcore.Level
 		core zapcore.Core
@@ -23,10 +23,10 @@ func InitZap(cfg *conf.Config) (logger *zap.Logger, err error) {
 		cfg.MaxAge,     // 保留旧文件的最大天数
 	)
 	encoder := getEncoder()
-	if err = l.UnmarshalText([]byte(cfg.Level)); err != nil {
-		fmt.Println("zap init failed:", err)
-		return
+	if err := l.UnmarshalText([]byte(cfg.Level)); err != nil {
+		log.Fatalf("main: init config zap log error :%+v\n", err)
 	}
+
 	if cfg.Mode == "debug" {
 		// 进入开发模式，日志输出到终端
 		consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
