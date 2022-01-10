@@ -2,17 +2,11 @@
 ## DDD 架构
 
 - DDD 端口和适配器模型 + CQRS 
-- domain 层采用充血模型
 
-## 路由 gorilla/mux
- go-sdk >= 1.3 不再支持 go原生 `net/http`的`ServerMux`，而是使用`gorilla/mux`来作为其路由
-### 之前是go-chi（dapr/go-sdk <=1.2）
-选用go-chi的理由：
-- 100% 兼容 `net/http`  重点考虑，没有做过度包装 可以完美集成
-- 只需要个路由功能，其他功能，如中间件等，使用 `dapr` 提供的
-- 性能很好
-- 参数解析和参数校验不打算使用 `go-playground/validate` 库，而是 [`bytedance/go-tagexpr`](https://github.com/bytedance/go-tagexpr)
-  解析参数+校验，支持原生 `net/http`，亲测性能优于`validate`
+本项目调用链：
+> main -> ports -> application -> domain (业务规则) +  adpaters (业务流程)
+
+其中，领域服务中数据读写的实际逻辑是在 adapters 实现
 
 ## DDD 分层图
 ![](https://pic3.zhimg.com/80/v2-7b9f668218cee34d21d5a6a966e46602_1440w.jpg)
@@ -22,7 +16,8 @@
 domain层是业务规则的集合，application service编排业务，domain service编排领域；
 
 domain体现在业务语义显现化，不仅仅是一堆代码，代码即文档、代码即业务；
-要达到高内聚就得充分发挥domain层的优势，domain层不单单是domain service，还有entity、vo、aggregate
+
+- 要达到高内聚就得充分发挥domain层的优势，domain层不单单是domain service，还有entity、vo、aggregate
 
 domain层是最最需要拥抱变化的一层，为什么？domain代表了业务规则，业务规则来自于需求，日常开发中，需求是经常变化的
 
@@ -34,10 +29,7 @@ domain层是最最需要拥抱变化的一层，为什么？domain代表了业�
 
 也就是domain层应该是一个纯内存操作，不依赖外部任何服务，这样提高了domain层的可测试性，拥抱变化的底气也来自于完整的UT，而application层UT全部得mock
 ## 层与层之间的依赖关系
->旧版， 借鉴Java: starter -> controller -> application -> domain -> infrastructure
-
-现在实现：
-main -> port -> application  -> adapters(infrastructure) -> domain 
+>借鉴Java: starter -> controller -> application -> domain -> infrastructure
 
 有些类似菱形架构
 
@@ -96,11 +88,6 @@ ReservationResource在接收到以 JSON 格式传递的前端请求后，将其�
 该实现访问了数据库，将端口发送过来的插入订票记录的请求转换为数据库能够接收的消息，执行插入操作。
 
 
-
-本项目调用链：
-> main -> ports -> application -> domain (调用领域服务)
-
-其中，领域服务中数据读写的实际逻辑是在 adapters 实现
 
 ## 开发思路
 如果开始一个新的业务，在划分好领域模型后，考虑到最终的依赖关系：

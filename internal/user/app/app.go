@@ -21,13 +21,13 @@ type Queries struct {
 	UsersPage query.UsersPageHandler
 }
 
-func NewApplication(service domain.UserService) Application {
+func NewApplication(repo domain.UserRepository) Application {
 	commands := Commands{
-		EditUserInfo: command.NewEditUserInfoHandler(service),
+		EditUserInfo: command.NewEditUserInfoHandler(repo),
 	}
 	queries := Queries{
-		UserInfo:  query.NewUsersInfoHandler(service),
-		UsersPage: query.NewUsersPageHandler(service),
+		UserInfo:  query.NewUsersInfoHandler(repo),
+		UsersPage: query.NewUsersPageHandler(repo),
 	}
 
 	return Application{Commands: commands, Queries: queries}

@@ -10,20 +10,18 @@ import (
 	"github.com/dapr-ddd-action/internal/user/domain"
 )
 
-// 入参 cmd
+// 入参 cmd ，参数尽量是struct，提高扩展性，除了只根据 id 或者 uuid 查询的请求(只有单个参数)
 // 出参 do -> dto
 
 // EditUserInfoHandler 业务编排
 type EditUserInfoHandler struct {
-	service domain.UserService
+	repo domain.UserRepository
 }
 
-func NewEditUserInfoHandler(service domain.UserService) EditUserInfoHandler {
+func NewEditUserInfoHandler(repo domain.UserRepository) EditUserInfoHandler {
 
-	return EditUserInfoHandler{service}
+	return EditUserInfoHandler{repo}
 }
-
-//         return orderDtoAssembler.orderToDTO(savedOrder);
 
 func (e EditUserInfoHandler) Handler(ctx context.Context, cmd *EditUserInfoCmd) error {
 	userDO := new(aggregate.User)
@@ -31,7 +29,7 @@ func (e EditUserInfoHandler) Handler(ctx context.Context, cmd *EditUserInfoCmd) 
 		return err
 	}
 
-	if err := e.service.UpdateUser(ctx, userDO); err != nil {
+	if err := e.repo.SaveUser(ctx, userDO); err != nil {
 		return err
 	}
 

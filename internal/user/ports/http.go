@@ -10,6 +10,8 @@ import (
 	"github.com/dapr-ddd-action/pkg/httpx"
 )
 
+// 入参 query 或 cmd 结构体
+// 出参 dto
 type UserController struct {
 	app app.Application
 }

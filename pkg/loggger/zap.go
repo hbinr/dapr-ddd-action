@@ -37,7 +37,8 @@ func InitZap(cfg *conf.Config) (logger *zap.Logger) {
 	} else {
 		core = zapcore.NewCore(encoder, writeSyncer, l)
 	}
-	logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(2))
+	// logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(2))
+	logger = zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(logger)
 	zap.L().Info("init logger success")
 	return

@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/dapr-ddd-action/internal/user/adapters/repository/data/po"
+	"github.com/dapr-ddd-action/internal/user/domain/aggregate"
 
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/jsonx"
 )
 
-func (u userRepo) SaveUserCache(ctx context.Context, key string, user *po.User) error {
+func (u userRepo) SaveUserCache(ctx context.Context, key string, user *aggregate.User) error {
 	storeName := "ddd-action-statestore"
 
 	data, err := jsonx.Marshal(user)
@@ -24,10 +24,10 @@ func (u userRepo) SaveUserCache(ctx context.Context, key string, user *po.User) 
 	return nil
 }
 
-func (u userRepo) GetUserFromCache(ctx context.Context, key string) (userDO *po.User, err error) {
+func (u userRepo) GetUserFromCache(ctx context.Context, key string) (userDO *aggregate.User, err error) {
 	storeName := "ddd-action-statestore"
 
-	userDO = new(po.User)
+	userDO = new(aggregate.User)
 	item, err := u.client.GetState(ctx, storeName, key)
 	if err != nil {
 		return

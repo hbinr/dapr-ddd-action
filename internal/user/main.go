@@ -12,7 +12,6 @@ import (
 	"github.com/dapr-ddd-action/pkg/util/file"
 
 	"github.com/dapr-ddd-action/internal/user/app"
-	"github.com/dapr-ddd-action/internal/user/domain"
 	"github.com/dapr-ddd-action/internal/user/ports"
 	"github.com/dapr-ddd-action/internal/user/server"
 
@@ -48,8 +47,7 @@ func main() {
 
 	// init bussiness
 	userRepo := repository.NewUserRepo(client, logger, gormClient)
-	userDomain := domain.NewUserDomain(userRepo)
-	userApp := app.NewApplication(userDomain)
+	userApp := app.NewApplication(userRepo)
 	userController := ports.NewUserController(userApp)
 	httpServer := server.NewHttpServer(userController)
 

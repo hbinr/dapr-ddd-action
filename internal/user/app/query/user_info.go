@@ -8,16 +8,16 @@ import (
 )
 
 type UserInfoHandler struct {
-	service domain.UserService
+	repo domain.UserRepository
 }
 
-func NewUsersInfoHandler(service domain.UserService) UserInfoHandler {
-	return UserInfoHandler{service}
+func NewUsersInfoHandler(repo domain.UserRepository) UserInfoHandler {
+	return UserInfoHandler{repo}
 }
 
 func (u UserInfoHandler) Handler(ctx context.Context, id int64) (res assemble.UserDTO, err error) {
-	usersDO, err := u.service.GetUserById(ctx, id)
-	// usersDO, err := u.service.GetUserFromCache(ctx, id)
+	usersDO, err := u.repo.GetUserById(ctx, id)
+	// usersDO, err := u.repo.GetUserFromCache(ctx, id)
 
 	if err != nil {
 		return
