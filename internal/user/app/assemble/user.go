@@ -17,6 +17,7 @@ func UserToDTO(user *aggregate.User) UserDTO {
 	return UserDTO{
 		ID:        user.ID,
 		UserName:  user.UserName,
+		Age:       user.Age,
 		CreatedAt: timex.DateToString(user.CreatedAt),
 		UpdatedAt: timex.DateToString(user.UpdatedAt),
 	}

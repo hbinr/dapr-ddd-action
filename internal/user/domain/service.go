@@ -3,8 +3,9 @@ package domain
 import (
 	"context"
 
+	"github.com/dapr-ddd-action/internal/user/adapters/repository/data/po"
+
 	"github.com/dapr-ddd-action/internal/user/domain/aggregate"
-	"github.com/dapr-ddd-action/internal/user/domain/data/po"
 	"github.com/jinzhu/copier"
 )
 

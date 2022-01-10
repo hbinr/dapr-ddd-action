@@ -25,8 +25,7 @@ func NewEditUserInfoHandler(service domain.UserService) EditUserInfoHandler {
 
 //         return orderDtoAssembler.orderToDTO(savedOrder);
 
-func (e EditUserInfoHandler) Handler(ctx context.Context, cmd EditUserInfoCmd) error {
-	//
+func (e EditUserInfoHandler) Handler(ctx context.Context, cmd *EditUserInfoCmd) error {
 	userDO := new(aggregate.User)
 	if err := copier.Copy(userDO, cmd); err != nil {
 		return err

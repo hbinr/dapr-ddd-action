@@ -1,9 +1,8 @@
 package repository
 
 import (
+	"github.com/dapr-ddd-action/internal/user/adapters/repository/data/dao"
 	"github.com/dapr-ddd-action/internal/user/domain"
-	"github.com/dapr-ddd-action/internal/user/domain/data/dao"
-
 	"go.uber.org/zap"
 
 	dapr "github.com/dapr/go-sdk/client"

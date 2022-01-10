@@ -24,7 +24,6 @@ func (u *UserController) RegisterHTTPRouter(r *fiber.App) {
 	group.Put("/", u.UpdateUser)
 }
 
-// GerUser 获取用户信息
 func (u UserController) GetUser(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
@@ -40,25 +39,18 @@ func (u UserController) GetUser(c *fiber.Ctx) error {
 		return err
 	}
 
-	// 看前端需要怎样的数据结构，可能需要固定的数据结构，前端取值可能是: res.data.code / res.data.data
-	// 如果是我开发前端，那么这里可以直接返回json，即 c.JSON(userDto) . 前端取值是: res.code / res.data
 	return c.JSON(httpx.RespSuccess(userDto))
 }
 
 func (u UserController) UpdateUser(c *fiber.Ctx) error {
 	req := new(command.EditUserInfoCmd)
-
 	if err := httpx.ParseAndValidate(c, req); err != nil {
 		return errorx.BadRequest(err.Error())
 	}
 
-	if err := u.app.Commands.EditUserInfo.Handler(c.Context(), command.EditUserInfoCmd{
-		ID:       req.ID,
-		UserName: req.UserName,
-	}); err != nil {
+	if err := u.app.Commands.EditUserInfo.Handler(c.Context(), req); err != nil {
 		return err
 	}
 
 	return c.JSON(httpx.RespSuccess(nil))
-	// return nil
 }

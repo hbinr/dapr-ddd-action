@@ -3,7 +3,7 @@ package domain
 import (
 	"context"
 
-	"github.com/dapr-ddd-action/internal/user/domain/data/po"
+	"github.com/dapr-ddd-action/internal/user/adapters/repository/data/po"
 )
 
 // 依赖倒置的Repo接口 外部adapter负责实现

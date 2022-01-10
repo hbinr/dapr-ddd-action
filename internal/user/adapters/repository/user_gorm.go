@@ -5,9 +5,10 @@ import (
 	"errors"
 	"time"
 
-	pagination2 "github.com/dapr-ddd-action/pkg/util/pagination"
+	"github.com/dapr-ddd-action/internal/user/adapters/repository/data/po"
 
-	"github.com/dapr-ddd-action/internal/user/domain/data/po"
+	"github.com/dapr-ddd-action/pkg/util/pagination"
+
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"gorm.io/gorm"
 )
@@ -17,7 +18,7 @@ import (
 // ListUsersPage 分页查询 user
 func (u userRepo) ListUsersPage(ctx context.Context, pageNum int, pageSize int) ([]*po.User, error) {
 	user := u.sqlClient.User
-	return user.WithContext(ctx).Limit(pageSize).Offset(pagination2.GetPageOffset(pageNum, pageSize)).Find()
+	return user.WithContext(ctx).Limit(pageSize).Offset(pagination.GetPageOffset(pageNum, pageSize)).Find()
 }
 
 func (u userRepo) GetUserById(ctx context.Context, id int64) (*po.User, error) {

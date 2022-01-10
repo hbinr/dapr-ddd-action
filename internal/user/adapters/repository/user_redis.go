@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/dapr-ddd-action/internal/user/domain/data/po"
+	"github.com/dapr-ddd-action/internal/user/adapters/repository/data/po"
+
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/jsonx"
 )
