@@ -1,24 +1,27 @@
 package daprhelp
 
 import (
-	"github.com/dapr-ddd-action/internal/pkg/constant"
 	"github.com/dapr/go-sdk/client"
 )
+
+const MySQLOperationQuery = "query"
+const MySQLOperationExec = "exec"
+const MySQLMetaDataKey = "sql"
 
 func BuildMySQLQueryBinding(name, sql string) *client.InvokeBindingRequest {
 	req := &client.InvokeBindingRequest{Metadata: map[string]string{}}
 	req.Name = name
-	req.Operation = constant.MySQLOperationQuery
+	req.Operation = MySQLOperationQuery
 	req.Data = nil
-	req.Metadata[constant.MySQLMetaDataKey] = sql
+	req.Metadata[MySQLMetaDataKey] = sql
 	return req
 }
 
 func BuildMySQLExecBinding(name, sql string) *client.InvokeBindingRequest {
 	req := &client.InvokeBindingRequest{Metadata: map[string]string{}}
 	req.Name = name
-	req.Operation = constant.MySQLOperationExec
+	req.Operation = MySQLOperationExec
 	req.Data = nil
-	req.Metadata[constant.MySQLMetaDataKey] = sql
+	req.Metadata[MySQLMetaDataKey] = sql
 	return req
 }
