@@ -17,7 +17,7 @@ func NewUsersPageHandler(repo domain.UserRepository) UsersPageHandler {
 	return UsersPageHandler{repo}
 }
 
-func (u UsersPageHandler) Handler(ctx context.Context, query UsersPageQuery) ([]assemble.UserDTO, error) {
+func (u UsersPageHandler) Handler(ctx context.Context, query *UsersPageQuery) ([]assemble.UserDTO, error) {
 	userDO, err := u.repo.ListUsersPage(ctx, query.GetCurrentPage(), query.GetPageSize())
 	if err != nil {
 		return nil, err

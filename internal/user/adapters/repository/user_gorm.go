@@ -5,16 +5,16 @@ import (
 	"errors"
 	"time"
 
-	"github.com/dapr-ddd-action/internal/user/adapters/repository/data/po"
+	"github.com/dapr-ddd-action/internal/user/adapters/converter"
 	"github.com/dapr-ddd-action/internal/user/domain/aggregate"
+	"github.com/dapr-ddd-action/pkg/daprhelp"
+	"github.com/dapr-ddd-action/pkg/errorx"
+	"github.com/dapr-ddd-action/pkg/jsonx"
 	"github.com/dapr-ddd-action/pkg/util/pagination"
 	"github.com/jinzhu/copier"
-
-	"github.com/dapr-ddd-action/pkg/errorx"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
-
-// adapter 依赖 domain
 
 // 使用 gorm 实现User 的 CURD
 
@@ -32,9 +32,26 @@ func (u userRepo) ListUsersPage(ctx context.Context, pageNum int, pageSize int) 
 	return
 }
 
+// GetUserById 查询用户信息
 func (u userRepo) GetUserById(ctx context.Context, id int64) (userDO *aggregate.User, err error) {
+	// 1. 先查cache
+	storeName := "ddd-action-statestore"
+	item, err := u.client.GetState(ctx, storeName, userDO.GetUserInfoKey(id))
+	if err != nil {
+		return
+	}
+
+	userDO = new(aggregate.User)
+	if item.Value != nil {
+		if err = jsonx.Unmarshal(item.Value, userDO); err != nil {
+			return
+		}
+		return
+	}
+
+	// 2. 再查DB
 	user := u.sqlClient.User
-	userPO, err := user.WithContext(ctx).Where(user.ID.Eq(id)).Take()
+	userPO, err := user.WithContext(ctx).Where(user.ID.Eq(int32(id))).Take()
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errorx.NotFound("user id = %d", id)
@@ -42,24 +59,24 @@ func (u userRepo) GetUserById(ctx context.Context, id int64) (userDO *aggregate.
 		}
 		return
 	}
+	userDO = converter.ToUserDO(userPO)
 
-	userDO = new(aggregate.User)
-	if err = copier.Copy(userDO, userPO); err != nil {
-		return
+	// 3. DB查到后, 回写 redis
+	stateItem, err := daprhelp.BuildExpireStateItem(userDO.GetUserInfoKey(id), userDO, 3600)
+	if err != nil {
+		u.logger.Error("repository: GetUserById write redis failed", zap.Error(err))
+		return nil, err
 	}
 
+	err = u.client.SaveBulkState(ctx, storeName, stateItem)
 	return
 }
 
 // SaveUser 修改/保存 user
 func (u userRepo) SaveUser(ctx context.Context, userDO *aggregate.User) error {
 	user := u.sqlClient.User
-	userPO := new(po.User)
+	userPO := converter.FromUserDO(userDO)
 
-	if err := copier.Copy(userPO, userDO); err != nil {
-		return err
-	}
-
-	userPO.UpdatedAt = time.Now()
+	userPO.UpdateTime = time.Now()
 	return user.WithContext(ctx).Where(user.ID.Eq(userPO.ID)).Save(userPO)
 }

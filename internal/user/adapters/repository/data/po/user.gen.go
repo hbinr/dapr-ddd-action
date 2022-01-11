@@ -10,16 +10,16 @@ const TableNameUser = "user"
 
 // User mapped from table <user>
 type User struct {
-	ID        int64     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	UserID    int64     `gorm:"column:user_id;not null" json:"user_id"`
-	Age       int32     `gorm:"column:age;not null" json:"age"`
-	UserName  string    `gorm:"column:user_name;not null" json:"user_name"`
-	Password  string    `gorm:"column:password;not null" json:"password"`
-	Email     string    `gorm:"column:email;not null" json:"email"`
-	Phone     string    `gorm:"column:phone;not null" json:"phone"`
-	RoleName  string    `gorm:"column:role_name;not null" json:"role_name"`
-	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
-	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
+	ID         int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"` // 用户表id
+	Username   string    `gorm:"column:username;not null" json:"username"`          // 用户名
+	Password   string    `gorm:"column:password;not null" json:"password"`          // 用户密码，MD5加密
+	Email      string    `gorm:"column:email" json:"email"`
+	Phone      string    `gorm:"column:phone" json:"phone"`
+	Question   string    `gorm:"column:question" json:"question"`                // 找回密码问题
+	Answer     string    `gorm:"column:answer" json:"answer"`                    // 找回密码答案
+	Role       int32     `gorm:"column:role;not null" json:"role"`               // 角色0-管理员,1-普通用户
+	CreateTime time.Time `gorm:"column:create_time;not null" json:"create_time"` // 创建时间
+	UpdateTime time.Time `gorm:"column:update_time;not null" json:"update_time"` // 最后一次更新时间
 }
 
 // TableName User's table name

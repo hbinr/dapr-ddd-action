@@ -12,7 +12,6 @@ import (
 // 响应 po
 
 type userRepo struct {
-	// client dapr client @Deprecated
 	client    dapr.Client
 	logger    *zap.Logger
 	sqlClient *dao.Query

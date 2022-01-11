@@ -8,7 +8,6 @@ import (
 	"context"
 
 	"github.com/dapr-ddd-action/internal/user/adapters/repository/data/po"
-
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -25,16 +24,16 @@ func newUser(db *gorm.DB) user {
 
 	tableName := _user.userDo.TableName()
 	_user.ALL = field.NewField(tableName, "*")
-	_user.ID = field.NewInt64(tableName, "id")
-	_user.UserID = field.NewInt64(tableName, "user_id")
-	_user.Age = field.NewInt32(tableName, "age")
-	_user.UserName = field.NewString(tableName, "user_name")
+	_user.ID = field.NewInt32(tableName, "id")
+	_user.Username = field.NewString(tableName, "username")
 	_user.Password = field.NewString(tableName, "password")
 	_user.Email = field.NewString(tableName, "email")
 	_user.Phone = field.NewString(tableName, "phone")
-	_user.RoleName = field.NewString(tableName, "role_name")
-	_user.CreatedAt = field.NewTime(tableName, "created_at")
-	_user.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_user.Question = field.NewString(tableName, "question")
+	_user.Answer = field.NewString(tableName, "answer")
+	_user.Role = field.NewInt32(tableName, "role")
+	_user.CreateTime = field.NewTime(tableName, "create_time")
+	_user.UpdateTime = field.NewTime(tableName, "update_time")
 
 	_user.fillFieldMap()
 
@@ -44,17 +43,17 @@ func newUser(db *gorm.DB) user {
 type user struct {
 	userDo userDo
 
-	ALL       field.Field
-	ID        field.Int64
-	UserID    field.Int64
-	Age       field.Int32
-	UserName  field.String
-	Password  field.String
-	Email     field.String
-	Phone     field.String
-	RoleName  field.String
-	CreatedAt field.Time
-	UpdatedAt field.Time
+	ALL        field.Field
+	ID         field.Int32
+	Username   field.String
+	Password   field.String
+	Email      field.String
+	Phone      field.String
+	Question   field.String
+	Answer     field.String
+	Role       field.Int32
+	CreateTime field.Time
+	UpdateTime field.Time
 
 	fieldMap map[string]field.Expr
 }
@@ -63,16 +62,16 @@ func (u user) As(alias string) *user {
 	u.userDo.DO = *(u.userDo.As(alias).(*gen.DO))
 
 	u.ALL = field.NewField(alias, "*")
-	u.ID = field.NewInt64(alias, "id")
-	u.UserID = field.NewInt64(alias, "user_id")
-	u.Age = field.NewInt32(alias, "age")
-	u.UserName = field.NewString(alias, "user_name")
+	u.ID = field.NewInt32(alias, "id")
+	u.Username = field.NewString(alias, "username")
 	u.Password = field.NewString(alias, "password")
 	u.Email = field.NewString(alias, "email")
 	u.Phone = field.NewString(alias, "phone")
-	u.RoleName = field.NewString(alias, "role_name")
-	u.CreatedAt = field.NewTime(alias, "created_at")
-	u.UpdatedAt = field.NewTime(alias, "updated_at")
+	u.Question = field.NewString(alias, "question")
+	u.Answer = field.NewString(alias, "answer")
+	u.Role = field.NewInt32(alias, "role")
+	u.CreateTime = field.NewTime(alias, "create_time")
+	u.UpdateTime = field.NewTime(alias, "update_time")
 
 	u.fillFieldMap()
 
@@ -94,15 +93,15 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 func (u *user) fillFieldMap() {
 	u.fieldMap = make(map[string]field.Expr, 10)
 	u.fieldMap["id"] = u.ID
-	u.fieldMap["user_id"] = u.UserID
-	u.fieldMap["age"] = u.Age
-	u.fieldMap["user_name"] = u.UserName
+	u.fieldMap["username"] = u.Username
 	u.fieldMap["password"] = u.Password
 	u.fieldMap["email"] = u.Email
 	u.fieldMap["phone"] = u.Phone
-	u.fieldMap["role_name"] = u.RoleName
-	u.fieldMap["created_at"] = u.CreatedAt
-	u.fieldMap["updated_at"] = u.UpdatedAt
+	u.fieldMap["question"] = u.Question
+	u.fieldMap["answer"] = u.Answer
+	u.fieldMap["role"] = u.Role
+	u.fieldMap["create_time"] = u.CreateTime
+	u.fieldMap["update_time"] = u.UpdateTime
 }
 
 func (u user) clone(db *gorm.DB) user {

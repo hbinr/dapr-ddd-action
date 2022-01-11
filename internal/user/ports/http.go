@@ -5,6 +5,7 @@ import (
 
 	"github.com/dapr-ddd-action/internal/user/app"
 	"github.com/dapr-ddd-action/internal/user/app/command"
+	"github.com/dapr-ddd-action/internal/user/app/query"
 
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/httpx"
@@ -23,6 +24,7 @@ func NewUserController(app app.Application) *UserController {
 func (u *UserController) RegisterHTTPRouter(r *fiber.App) {
 	group := r.Group("/user")
 	group.Get("/:id/info", u.GetUser)
+	group.Get("/list", u.GetUser)
 	group.Put("/", u.UpdateUser)
 }
 
@@ -44,6 +46,19 @@ func (u UserController) GetUser(c *fiber.Ctx) error {
 	return c.JSON(httpx.RespSuccess(userDto))
 }
 
+func (u UserController) ListUser(c *fiber.Ctx) error {
+	req := new(query.UsersPageQuery)
+	if err := httpx.ParseAndValidate(c, req); err != nil {
+		return errorx.BadRequest(err.Error())
+	}
+
+	userDto, err := u.app.Queries.UsersPage.Handler(c.Context(), req)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(httpx.RespSuccess(userDto))
+}
 func (u UserController) UpdateUser(c *fiber.Ctx) error {
 	req := new(command.EditUserInfoCmd)
 	if err := httpx.ParseAndValidate(c, req); err != nil {

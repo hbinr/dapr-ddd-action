@@ -41,7 +41,7 @@ func (u userRepo) GetUserFromCache(ctx context.Context, key string) (userDO *agg
 	if err = jsonx.Unmarshal(item.Value, userDO); err != nil {
 		return
 	}
-	// 输出示例: data retrieved [key:user:info6 etag:11]: &{ID:6 UserName:redis-test2}
+	// 输出示例: data retrieved [key:user:info6 etag:11]: &{ID:6 Username:redis-test2}
 	fmt.Printf("data retrieved [key:%s etag:%s]: %+v\n", item.Key, item.Etag, userDO)
 	return
 }
