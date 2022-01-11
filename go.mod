@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/bytedance/go-tagexpr/v2 v2.9.1
-	github.com/bytedance/sonic v1.0.0-rc.3
+	github.com/bytedance/sonic v1.0.0
 	github.com/dapr/go-sdk v1.3.1-0.20211229074208-078d0cdc40f2
 	github.com/dapr/kit v0.0.2-0.20210614175626-b9074b64d233
 	github.com/gofiber/fiber/v2 v2.24.0

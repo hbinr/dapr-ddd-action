@@ -19,7 +19,7 @@ var (
 func Init(conf *conf.Database) *gorm.DB {
 	db, err := gorm.Open(mysql.Open(conf.Source), gormConfig(conf.LogMode))
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	if sqlDB, err = db.DB(); err != nil {
