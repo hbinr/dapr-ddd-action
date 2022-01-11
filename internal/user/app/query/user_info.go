@@ -23,6 +23,6 @@ func (u UserInfoHandler) Handler(ctx context.Context, id int64) (res assemble.Us
 		return
 	}
 
-	res = assemble.UserToDTO(usersDO)
+	res = assemble.ToUserDTO(usersDO)
 	return
 }

@@ -7,15 +7,15 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/dapr-ddd-action/pkg/server"
+
 	"github.com/dapr-ddd-action/internal/user/adapters/repository/data/dao"
 
 	"github.com/dapr-ddd-action/pkg/util/file"
 
+	"github.com/dapr-ddd-action/internal/user/adapters/repository"
 	"github.com/dapr-ddd-action/internal/user/app"
 	"github.com/dapr-ddd-action/internal/user/ports"
-	"github.com/dapr-ddd-action/internal/user/server"
-
-	"github.com/dapr-ddd-action/internal/user/adapters/repository"
 	"github.com/dapr-ddd-action/pkg/conf"
 	"github.com/dapr-ddd-action/pkg/database"
 	zapLogger "github.com/dapr-ddd-action/pkg/loggger"
@@ -45,12 +45,12 @@ func main() {
 	// init gorm client
 	gormClient := dao.Use(database.Init(&appConf.Database))
 
-	// init bussiness
+	// init user bussiness
 	userRepo := repository.NewUserRepo(client, logger, gormClient)
 	userApp := app.NewApplication(userRepo)
 	userController := ports.NewUserController(userApp)
-	httpServer := server.NewHttpServer(userController)
 
+	httpServer := server.NewHttpServer(userController)
 	// start server
 	if err := httpServer.Listen(fmt.Sprintf(":%d", appConf.Port)); err != nil {
 		log.Panic(err)

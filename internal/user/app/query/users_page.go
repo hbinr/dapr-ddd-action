@@ -25,7 +25,7 @@ func (u UsersPageHandler) Handler(ctx context.Context, query UsersPageQuery) ([]
 	res := make([]assemble.UserDTO, 0, len(userDO))
 
 	for _, user := range userDO {
-		res = append(res, assemble.UserToDTO(user))
+		res = append(res, assemble.ToUserDTO(user))
 	}
 
 	return res, nil

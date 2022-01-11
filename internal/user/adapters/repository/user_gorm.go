@@ -14,6 +14,8 @@ import (
 	"gorm.io/gorm"
 )
 
+// adapter 依赖 domain
+
 // 使用 gorm 实现User 的 CURD
 
 // ListUsersPage 分页查询 user
@@ -40,6 +42,7 @@ func (u userRepo) GetUserById(ctx context.Context, id int64) (userDO *aggregate.
 		}
 		return
 	}
+
 	userDO = new(aggregate.User)
 	if err = copier.Copy(userDO, userPO); err != nil {
 		return
@@ -58,6 +61,5 @@ func (u userRepo) SaveUser(ctx context.Context, userDO *aggregate.User) error {
 	}
 
 	userPO.UpdatedAt = time.Now()
-
 	return user.WithContext(ctx).Where(user.ID.Eq(userPO.ID)).Save(userPO)
 }

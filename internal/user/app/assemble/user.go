@@ -13,7 +13,7 @@ type UserDTO struct {
 	UpdatedAt string `json:"updateTime"`
 }
 
-func UserToDTO(user *aggregate.User) UserDTO {
+func ToUserDTO(user *aggregate.User) UserDTO {
 	return UserDTO{
 		ID:        user.ID,
 		UserName:  user.UserName,

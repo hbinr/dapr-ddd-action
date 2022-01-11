@@ -10,7 +10,7 @@ import (
 	"github.com/dapr-ddd-action/pkg/httpx"
 )
 
-// 入参 query 或 cmd 结构体
+// 入参 需要转化为 Command, Query，然后给到App层
 // 出参 dto
 type UserController struct {
 	app app.Application
@@ -22,7 +22,7 @@ func NewUserController(app app.Application) *UserController {
 
 func (u *UserController) RegisterHTTPRouter(r *fiber.App) {
 	group := r.Group("/user")
-	group.Get("/:id", u.GetUser)
+	group.Get("/:id/info", u.GetUser)
 	group.Put("/", u.UpdateUser)
 }
 

@@ -1,30 +1,5 @@
 package repository
 
-import (
-	"github.com/dapr-ddd-action/internal/user/adapters/repository/data/dao"
-	"github.com/dapr-ddd-action/internal/user/domain"
-	"go.uber.org/zap"
-
-	dapr "github.com/dapr/go-sdk/client"
-)
-
-// 入参 po
-// 响应 po
-
-type userRepo struct {
-	// client dapr client @Deprecated
-	client    dapr.Client
-	logger    *zap.Logger
-	sqlClient *dao.Query
-}
-
-func NewUserRepo(
-	client dapr.Client,
-	logger *zap.Logger,
-	sqlClient *dao.Query) domain.UserRepository {
-	return &userRepo{client, logger, sqlClient}
-}
-
 // // GetUserById 通过 dapr  InvokeBinding API 访问MySQL
 // func (u userRepo) GetUserById(ctx context.Context, id int64) (*po.User, error) {
 // 	// 1. 需要自己拼接SQL, 需要注意注入SQL的风险
