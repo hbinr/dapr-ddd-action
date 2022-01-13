@@ -67,7 +67,6 @@ func (u userRepo) GetUserById(ctx context.Context, id int64) (userDO *aggregate.
 		u.logger.Error("repository: GetUserById write redis failed", zap.Error(err))
 		return nil, err
 	}
-
 	err = u.client.SaveBulkState(ctx, storeName, stateItem)
 	return
 }

@@ -8,9 +8,12 @@
 			"appProtocol": "http",
 			"label": "daprd-debug",
 			"type": "daprd",
-			"componentsPath": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/dapr/components",
+			// for linux:
+			// "componentsPath": "${workspaceFolder}/dapr/components",
+			//  for windows:
+			"componentsPath": "E:\\Workspace\\go\\src\\my-project\\dapr-ddd-action\\dapr\\components",
 			"logLevel": "debug",
-			// "config": "/Users/duanhaobin/go/workspace/my-project/dapr-ddd-action/internal/user/configs/config.yaml",
+			// "config": "${workspaceFolder}/internal/user/configs/config.yaml",
 		},
 		{
 			"appId": "dapr-user-service",

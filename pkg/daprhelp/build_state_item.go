@@ -1,6 +1,8 @@
 package daprhelp
 
 import (
+	"strconv"
+
 	"github.com/dapr-ddd-action/pkg/jsonx"
 	"github.com/dapr/go-sdk/client"
 )
@@ -17,7 +19,7 @@ func BuildExpireStateItem(key string, data interface{}, expire int) (*client.Set
 		Value: value,
 		Metadata: map[string]string{
 			// ttlInSeconds (time-to-live in seconds) 过期时间
-			"ttlInSeconds": string(rune(expire)),
+			"ttlInSeconds": strconv.Itoa(expire),
 		},
 	}, nil
 }

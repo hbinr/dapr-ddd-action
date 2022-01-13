@@ -8,7 +8,7 @@ all: help
 .PHONY: tidy
 tidy: ## Updates the go modules and vendors all dependencies
 	go mod tidy
-	#go mod vendor
+	go mod vendor
 
 .PHONY: test
 test: tidy ## Tests the entire project
