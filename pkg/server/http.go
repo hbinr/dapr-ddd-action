@@ -4,6 +4,7 @@ import (
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/jsonx"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"go.uber.org/zap"
 )
 
@@ -29,6 +30,9 @@ func NewHttpServer(servers ...Server) *fiber.App {
 	}
 
 	app := fiber.New(config)
+
+	// add middleware
+	app.Use(recover.New())
 	for _, s := range servers {
 		s.RegisterHTTPRouter(app)
 	}

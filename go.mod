@@ -18,7 +18,7 @@ require (
 
 require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
-	github.com/andybalholm/brotli v1.0.2 // indirect
+	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/dapr/dapr v1.5.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -27,20 +27,20 @@ require (
 	github.com/henrylee2cn/goutil v0.0.0-20210818094442-ed2b3cfe804b // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.4 // indirect
-	github.com/klauspost/compress v1.13.4 // indirect
+	github.com/klauspost/compress v1.14.1 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/nyaruka/phonenumbers v1.0.55 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.31.0 // indirect
+	github.com/valyala/fasthttp v1.32.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.uber.org/atomic v1.8.0 // indirect
 	go.uber.org/multierr v1.7.0 // indirect
 	golang.org/x/mod v0.5.1 // indirect
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
-	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
+	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.8 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect

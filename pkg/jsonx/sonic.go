@@ -15,6 +15,7 @@ func Unmarshal(buf []byte, val interface{}) error {
 	if len(buf) == 0 {
 		return errors.New("jsonx: empty data to unmarshal")
 	}
+
 	return json.Unmarshal(buf, val)
 }
 
