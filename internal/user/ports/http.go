@@ -24,7 +24,7 @@ func NewUserController(app app.Application) *UserController {
 func (u *UserController) RegisterHTTPRouter(r *fiber.App) {
 	group := r.Group("/user")
 	group.Get("/:id/info", u.GetUser)
-	group.Get("/list", u.GetUser)
+	group.Get("/list", u.ListUser)
 	group.Put("/", u.UpdateUser)
 }
 
@@ -48,7 +48,8 @@ func (u UserController) GetUser(c *fiber.Ctx) error {
 
 func (u UserController) ListUser(c *fiber.Ctx) error {
 	req := new(query.UsersPageQuery)
-	if err := httpx.ParseAndValidate(c, req); err != nil {
+
+	if err := httpx.QueryParseAndValidate(c, req); err != nil {
 		return errorx.BadRequest(err.Error())
 	}
 
@@ -61,7 +62,7 @@ func (u UserController) ListUser(c *fiber.Ctx) error {
 }
 func (u UserController) UpdateUser(c *fiber.Ctx) error {
 	req := new(command.EditUserInfoCmd)
-	if err := httpx.ParseAndValidate(c, req); err != nil {
+	if err := httpx.BodyParseAndValidate(c, req); err != nil {
 		return errorx.BadRequest(err.Error())
 	}
 

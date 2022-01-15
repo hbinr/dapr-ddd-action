@@ -11,7 +11,6 @@ import (
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/jsonx"
 	"github.com/dapr-ddd-action/pkg/util/pagination"
-	"github.com/jinzhu/copier"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -26,9 +25,11 @@ func (u userRepo) ListUsersPage(ctx context.Context, pageNum int, pageSize int) 
 		return
 	}
 
-	if err = copier.Copy(userDOs, userPOs); err != nil {
-		return
+	userDOs = make([]*aggregate.User, 0, len(userPOs))
+	for _, item := range userPOs {
+		userDOs = append(userDOs, converter.ToUserDO(item))
 	}
+
 	return
 }
 

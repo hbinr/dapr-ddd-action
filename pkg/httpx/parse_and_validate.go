@@ -6,9 +6,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func ParseAndValidate(c *fiber.Ctx, recvPointer interface{}) error {
+func BodyParseAndValidate(c *fiber.Ctx, recvPointer interface{}) error {
 	if err := c.BodyParser(recvPointer); err != nil {
-		return errorx.Internal(err, "request parse failed")
+		return errorx.Internal(err, "request body parse failed")
+	}
+
+	return vd.Validate(recvPointer)
+}
+
+func QueryParseAndValidate(c *fiber.Ctx, recvPointer interface{}) error {
+	if err := c.QueryParser(recvPointer); err != nil {
+		return errorx.Internal(err, "request query parse failed")
 	}
 
 	return vd.Validate(recvPointer)

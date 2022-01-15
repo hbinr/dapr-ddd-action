@@ -1,8 +1,8 @@
 package query
 
 type UsersPageQuery struct {
-	CurrentPage int
-	PageSize    int
+	CurrentPage int `query:"current_page"`
+	PageSize    int `query:"page_size"`
 }
 
 func (up UsersPageQuery) GetPageSize() int {
@@ -17,6 +17,5 @@ func (up UsersPageQuery) GetCurrentPage() int {
 	if up.CurrentPage == 0 {
 		return 1
 	}
-
 	return up.CurrentPage
 }
