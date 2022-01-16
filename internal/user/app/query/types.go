@@ -1,8 +1,9 @@
 package query
 
+import "github.com/dapr-ddd-action/pkg/util/pagination"
+
 type UsersPageQuery struct {
-	CurrentPage int `query:"current_page"`
-	PageSize    int `query:"page_size"`
+	pagination.BasePageQuery
 }
 
 func (up UsersPageQuery) GetPageSize() int {

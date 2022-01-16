@@ -2,33 +2,30 @@ package repository
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/dapr-ddd-action/internal/pkg/constants"
 	"github.com/dapr-ddd-action/internal/user/domain/aggregate"
+	"go.uber.org/zap"
 
+	"github.com/dapr-ddd-action/pkg/daprhelp"
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/jsonx"
 )
 
-func (u userRepo) SaveUserCache(ctx context.Context, key string, user *aggregate.User) error {
-	storeName := "ddd-action-statestore"
-
-	data, err := jsonx.Marshal(user)
+func (u userRepo) SaveUserCache(ctx context.Context, key string, userDO *aggregate.User) error {
+	stateItem, err := daprhelp.BuildExpireStateItem(userDO.GetUserInfoKey(userDO.ID), userDO, 3600)
 	if err != nil {
+		u.logger.Error("repository: GetUserById write redis failed", zap.Error(err))
+
 		return err
 	}
 
-	if err := u.client.SaveState(ctx, storeName, key, data); err != nil {
-		return err
-	}
-	return nil
+	return u.client.SaveBulkState(ctx, constants.StateStoreName, stateItem)
 }
 
 func (u userRepo) GetUserFromCache(ctx context.Context, key string) (userDO *aggregate.User, err error) {
-	storeName := "ddd-action-statestore"
-
 	userDO = new(aggregate.User)
-	item, err := u.client.GetState(ctx, storeName, key)
+	item, err := u.client.GetState(ctx, constants.StateStoreName, key)
 	if err != nil {
 		return
 	}
@@ -41,7 +38,5 @@ func (u userRepo) GetUserFromCache(ctx context.Context, key string) (userDO *agg
 	if err = jsonx.Unmarshal(item.Value, userDO); err != nil {
 		return
 	}
-	// 输出示例: data retrieved [key:user:info6 etag:11]: &{ID:6 Username:redis-test2}
-	fmt.Printf("data retrieved [key:%s etag:%s]: %+v\n", item.Key, item.Etag, userDO)
 	return
 }

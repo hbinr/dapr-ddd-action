@@ -60,6 +60,7 @@ func (u UserController) ListUser(c *fiber.Ctx) error {
 
 	return c.JSON(httpx.RespSuccess(userDto))
 }
+
 func (u UserController) UpdateUser(c *fiber.Ctx) error {
 	req := new(command.EditUserInfoCmd)
 	if err := httpx.BodyParseAndValidate(c, req); err != nil {
