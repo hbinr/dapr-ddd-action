@@ -36,14 +36,12 @@ func (u userRepo) ListUsersPage(ctx context.Context, pageNum int, pageSize int) 
 // GetUserById 查询用户信息
 func (u userRepo) GetUserById(ctx context.Context, id int64) (userDO *aggregate.User, err error) {
 	// 1. 先查cache
-	userDO, err = u.GetUserFromCache(ctx, userDO.GetUserInfoKey(id))
-
-	if err != nil {
-		u.logger.Error("repo: get user from cache failed", zap.Error(err), zap.Int64("id", id))
+	if userDO, err = u.GetUserFromCache(ctx, userDO.GetUserInfoKey(id)); err == nil {
+		return
 	}
 
-	if userDO != nil {
-		return
+	if !errorx.IsRecordNotFound(err) {
+		u.logger.Error("repo: get user from cache failed", zap.Error(err), zap.Int64("id", id))
 	}
 
 	// 2. 再查DB

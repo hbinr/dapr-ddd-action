@@ -5,6 +5,10 @@ type BasePageQuery struct {
 	PageSize    int `query:"page_size"`
 }
 
+func GetPageOffset(pageNum, pageSize int) int {
+	return (pageNum - 1) * pageSize
+}
+
 func (up BasePageQuery) GetPageSize() int {
 	if up.PageSize == 0 {
 		return 10
@@ -18,8 +22,4 @@ func (up BasePageQuery) GetCurrentPage() int {
 		return 1
 	}
 	return up.CurrentPage
-}
-
-func GetPageOffset(pageNum, pageSize int) int {
-	return (pageNum - 1) * pageSize
 }
