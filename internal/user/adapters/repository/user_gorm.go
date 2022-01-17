@@ -40,7 +40,7 @@ func (u userRepo) GetUserById(ctx context.Context, id int64) (userDO *aggregate.
 		return
 	}
 
-	if !errorx.IsRecordNotFound(err) {
+	if !errorx.IsNotFound(err) {
 		u.logger.Error("repo: get user from cache failed", zap.Error(err), zap.Int64("id", id))
 	}
 

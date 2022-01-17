@@ -1,6 +1,5 @@
 package errorx
 
-func IsRecordNotFound(err error) bool {
-	e := From(err)
-	return e.Code == 404
+func IsNotFound(err error) bool {
+	return From(err).Code == 404
 }
