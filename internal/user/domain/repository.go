@@ -15,7 +15,7 @@ import (
 type UserRepository interface {
 	// ListUsersPage 分页查询 user
 	ListUsersPage(ctx context.Context, pageNum, pageSize int) ([]*aggregate.User, error)
-	GetUserById(context.Context, int64) (*aggregate.User, error)
+	GetUserByID(context.Context, int64) (*aggregate.User, error)
 	// SaveUser 修改 user
 	SaveUser(context.Context, *aggregate.User) error
 

@@ -33,8 +33,8 @@ func (u userRepo) ListUsersPage(ctx context.Context, pageNum int, pageSize int) 
 	return
 }
 
-// GetUserById 查询用户信息
-func (u userRepo) GetUserById(ctx context.Context, id int64) (userDO *aggregate.User, err error) {
+// GetUserByID 查询用户信息
+func (u userRepo) GetUserByID(ctx context.Context, id int64) (userDO *aggregate.User, err error) {
 	// 1. 先查cache
 	if userDO, err = u.GetUserFromCache(ctx, userDO.GetUserInfoKey(id)); err == nil {
 		return
@@ -57,9 +57,9 @@ func (u userRepo) GetUserById(ctx context.Context, id int64) (userDO *aggregate.
 	userDO = converter.ToUserDO(userPO)
 
 	// 3. DB查到后, 回写 redis
-	stateItem, err := daprhelp.BuildExpireStateItem(userDO.GetUserInfoKey(id), userDO, 3600)
+	stateItem, err := daprhelp.BuildExpireStateItem(userDO.GetUserInfoKey(id), userDO, constants.ExpireUserInfo)
 	if err != nil {
-		u.logger.Error("repository: GetUserById write redis failed", zap.Error(err))
+		u.logger.Error("repository: GetUserByID write redis failed", zap.Error(err))
 		return nil, err
 	}
 	err = u.client.SaveBulkState(ctx, constants.StateStoreName, stateItem)
