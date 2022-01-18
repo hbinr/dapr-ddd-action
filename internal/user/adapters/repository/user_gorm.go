@@ -5,10 +5,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/dapr-ddd-action/internal/pkg/constants"
 	"github.com/dapr-ddd-action/internal/user/adapters/converter"
 	"github.com/dapr-ddd-action/internal/user/domain/aggregate"
-	"github.com/dapr-ddd-action/pkg/daprhelp"
 	"github.com/dapr-ddd-action/pkg/errorx"
 	"github.com/dapr-ddd-action/pkg/util/pagination"
 	"go.uber.org/zap"
@@ -35,8 +33,9 @@ func (u userRepo) ListUsersPage(ctx context.Context, pageNum int, pageSize int) 
 
 // GetUserByID 查询用户信息
 func (u userRepo) GetUserByID(ctx context.Context, id int64) (userDO *aggregate.User, err error) {
+	redisKey := userDO.GetUserInfoKey(id)
 	// 1. 先查cache
-	if userDO, err = u.GetUserFromCache(ctx, userDO.GetUserInfoKey(id)); err == nil {
+	if userDO, err = u.GetUserFromCache(ctx, redisKey); err == nil {
 		return
 	}
 
@@ -57,12 +56,12 @@ func (u userRepo) GetUserByID(ctx context.Context, id int64) (userDO *aggregate.
 	userDO = converter.ToUserDO(userPO)
 
 	// 3. DB查到后, 回写 redis
-	stateItem, err := daprhelp.BuildExpireStateItem(userDO.GetUserInfoKey(id), userDO, constants.ExpireUserInfo)
+	err = u.SaveUserCache(ctx, redisKey, userDO)
 	if err != nil {
-		u.logger.Error("repository: GetUserByID write redis failed", zap.Error(err))
+		u.logger.Error("repository: SaveUserCache write redis failed",
+			zap.Error(err), zap.String("redis key=%s", redisKey))
 		return nil, err
 	}
-	err = u.client.SaveBulkState(ctx, constants.StateStoreName, stateItem)
 	return
 }
 

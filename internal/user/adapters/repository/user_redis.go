@@ -16,7 +16,6 @@ func (u userRepo) SaveUserCache(ctx context.Context, key string, userDO *aggrega
 	stateItem, err := daprhelp.BuildExpireStateItem(userDO.GetUserInfoKey(userDO.ID), userDO, constants.ExpireUserInfo)
 	if err != nil {
 		u.logger.Error("repository: GetUserByID write redis failed", zap.Error(err))
-
 		return err
 	}
 
