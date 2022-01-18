@@ -58,10 +58,10 @@ func (u userRepo) GetUserByID(ctx context.Context, id int64) (userDO *aggregate.
 	// 3. DB查到后, 回写 redis
 	err = u.SaveUserCache(ctx, redisKey, userDO)
 	if err != nil {
-		u.logger.Error("repository: SaveUserCache write redis failed",
-			zap.Error(err), zap.String("redis key=%s", redisKey))
-		return nil, err
+		u.logger.Error("repository: SaveUserCache write redis failed", zap.Error(err), zap.String("redis key=%s", redisKey))
+		return userDO, nil
 	}
+
 	return
 }
 
