@@ -22,10 +22,10 @@ func NewUserController(app app.Application) *UserController {
 }
 
 func (u *UserController) RegisterHTTPRouter(r *fiber.App) {
-	group := r.Group("/user")
-	group.Get("/:id/info", u.GetUser)
-	group.Get("/list", u.ListUser)
-	group.Put("/", u.UpdateUser)
+	r.Group("/user").
+		Get("/:id/info", u.GetUser).
+		Get("/list", u.ListUser).
+		Put("/", u.UpdateUser)
 }
 
 func (u UserController) GetUser(c *fiber.Ctx) error {
