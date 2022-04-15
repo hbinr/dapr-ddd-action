@@ -12,13 +12,12 @@ func Init(filePath string) (conf *Config) {
 	var (
 		data []byte
 		err  error
+		cfg  = make(map[string]interface{})
 	)
 
 	if data, err = os.ReadFile(filePath); err != nil {
 		log.Fatalln("conf: os.ReadFile failed,err:", err)
 	}
-
-	cfg := make(map[string]interface{})
 
 	if err = yaml.Unmarshal(data, cfg); err != nil {
 		log.Fatalln("conf: yaml.Unmarshal failed, err:", err)
