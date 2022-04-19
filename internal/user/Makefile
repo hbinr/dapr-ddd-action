@@ -23,7 +23,7 @@ run: tidy ## Runs uncompiled code in Dapr, log_level: debug/info/error/warning
 		--app-max-concurrency  10000000 \
 		--dapr-http-port 3500 \
 		--components-path ../../dapr/components \
-		--log-level error \
+		--log-level debug \
 		--config ./configs/config.yaml \
         go run  ./main.go
 
@@ -36,7 +36,7 @@ dev: tidy ## Runs uncompiled code in Dapr, log_level: debug/info/error/warning
 		--app-max-concurrency  10000000 \
 		--dapr-http-port 3500 \
 		--components-path ../../dapr/components \
-		--log-level dev \
+		--log-level debug \
 		--config ./configs/config.yaml \
         go run  ./main.go
 
