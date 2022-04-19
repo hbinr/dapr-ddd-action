@@ -14,7 +14,7 @@ tidy: ## Updates the go modules and vendors all dependencies
 test: tidy ## Tests the entire project
 	go test -count=1 -race ./...
 
-.PHONY: run
+.PHONY: prod
 run: tidy ## Runs uncompiled code in Dapr, log_level: debug/info/error/warning
 	dapr run \
 		--app-id $(SERVICE_NAME) \
@@ -24,6 +24,19 @@ run: tidy ## Runs uncompiled code in Dapr, log_level: debug/info/error/warning
 		--dapr-http-port 3500 \
 		--components-path ../../dapr/components \
 		--log-level error \
+		--config ./configs/config.yaml \
+        go run  ./main.go
+
+.PHONY: dev
+dev: tidy ## Runs uncompiled code in Dapr, log_level: debug/info/error/warning
+	dapr run \
+		--app-id $(SERVICE_NAME) \
+		--app-port 8090 \
+		--app-protocol http \
+		--app-max-concurrency  10000000 \
+		--dapr-http-port 3500 \
+		--components-path ../../dapr/components \
+		--log-level dev \
 		--config ./configs/config.yaml \
         go run  ./main.go
 
