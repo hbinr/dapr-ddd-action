@@ -1,8 +1,6 @@
 package ports
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/dapr-ddd-action/internal/user/app"
