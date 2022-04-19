@@ -20,6 +20,7 @@ func Unmarshal(buf []byte, val interface{}) error {
 }
 
 //  for Linux/darwin
+// "github.com/bytedance/sonic"
 // func Marshal(val interface{}) ([]byte, error) {
 // 	return sonic.Marshal(val)
 // }

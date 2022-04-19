@@ -22,11 +22,11 @@ func NewUserController(app app.Application) *UserController {
 }
 
 func (u *UserController) RegisterHTTPRouter(r *fiber.App) {
-	r.Group("/user").
-		Get("/api", u.TestCall).
-		Get("/:id/info", u.GetUser).
-		Get("/list", u.ListUser).
-		Put("/", u.UpdateUser)
+	userGrp := r.Group("/user")
+	userGrp.Get("/api", u.TestCall)
+	userGrp.Get("/:id/info", u.GetUser)
+	userGrp.Get("/list", u.ListUser)
+	userGrp.Put("/", u.UpdateUser)
 }
 
 func (u UserController) TestCall(c *fiber.Ctx) error {
