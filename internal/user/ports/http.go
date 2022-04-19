@@ -1,6 +1,8 @@
 package ports
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/dapr-ddd-action/internal/user/app"
@@ -23,9 +25,14 @@ func NewUserController(app app.Application) *UserController {
 
 func (u *UserController) RegisterHTTPRouter(r *fiber.App) {
 	r.Group("/user").
+		Get("/api", u.TestCall).
 		Get("/:id/info", u.GetUser).
 		Get("/list", u.ListUser).
 		Put("/", u.UpdateUser)
+}
+
+func (u UserController) TestCall(c *fiber.Ctx) error {
+	return c.SendString("body string")
 }
 
 func (u UserController) GetUser(c *fiber.Ctx) error {

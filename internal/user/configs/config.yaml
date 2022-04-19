@@ -1,5 +1,5 @@
 system:
-  mode: "release" # test/debug/release
+  mode: "debug" # test/debug/release
   port: 8090
 
 log:

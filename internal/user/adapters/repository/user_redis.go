@@ -24,7 +24,7 @@ func (u userRepo) SaveUserCache(ctx context.Context, key string, userDO *aggrega
 
 func (u userRepo) GetUserFromCache(ctx context.Context, key string) (userDO *aggregate.User, err error) {
 	userDO = new(aggregate.User)
-	item, err := u.client.GetState(ctx, constants.StateStoreName, key)
+	item, err := u.client.GetState(ctx, constants.StateStoreName, key, nil)
 	if err != nil {
 		return
 	}

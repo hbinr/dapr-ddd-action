@@ -9,7 +9,7 @@ func GetPageOffset(pageNum, pageSize int) int {
 	return (pageNum - 1) * pageSize
 }
 
-func (up BasePageQuery) GetPageSize() int {
+func (up *BasePageQuery) GetPageSize() int {
 	if up.PageSize == 0 {
 		return 10
 	}
@@ -17,7 +17,7 @@ func (up BasePageQuery) GetPageSize() int {
 	return up.PageSize
 }
 
-func (up BasePageQuery) GetCurrentPage() int {
+func (up *BasePageQuery) GetCurrentPage() int {
 	if up.CurrentPage == 0 {
 		return 1
 	}
