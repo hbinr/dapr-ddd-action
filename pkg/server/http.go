@@ -13,9 +13,9 @@ func NewHttpServer(servers ...Server) *fiber.App {
 		DisableStartupMessage: true,
 		// custom error handler
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
-			// fiber error
 			fiberNativeErr, ok := err.(*fiber.Error)
 			code := fiber.StatusInternalServerError
+
 			if ok {
 				code = fiberNativeErr.Code
 				err = fiberNativeErr
@@ -24,6 +24,7 @@ func NewHttpServer(servers ...Server) *fiber.App {
 				code = customErr.Code
 				err = customErr
 			}
+
 			zap.L().Error("internal err: ", zap.Error(err),
 				zap.Int("Code", code),
 				zap.String("BaseURL", c.BaseURL()),
