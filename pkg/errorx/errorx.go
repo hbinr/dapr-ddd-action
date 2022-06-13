@@ -17,10 +17,9 @@ type Metadata map[string]interface{}
 
 func Internal(err error, format string, args ...interface{}) *Error {
 	message := fmt.Sprintf(format, args...)
-	return Build(http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError, message).
-		Metadata(Metadata{"error": err}).
-		Error(err).
-		Err()
+	return New(http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError, message).
+		WithMetadata(Metadata{"error": err}).
+		WithError(err)
 }
 
 func NotFound(format string, args ...interface{}) *Error {
@@ -80,38 +79,4 @@ func (e *Error) WithMetadata(metadata Metadata) *Error {
 func (e *Error) WithError(err error) *Error {
 	e.Err = err
 	return e
-}
-
-type Builder struct {
-	err *Error
-}
-
-func Build(t string, code int, message string) Builder {
-	return Builder{
-		err: New(t, code, message),
-	}
-}
-
-func (b Builder) Message(message string) Builder {
-	b.err.Message = message
-	return b
-}
-
-func (b Builder) Messagef(format string, args ...interface{}) Builder {
-	b.err.Message = fmt.Sprintf(format, args...)
-	return b
-}
-
-func (b Builder) Metadata(metadata Metadata) Builder {
-	b.err.Metadata = metadata
-	return b
-}
-
-func (b Builder) Error(err error) Builder {
-	b.err.Err = err
-	return b
-}
-
-func (b Builder) Err() *Error {
-	return b.err
 }
