@@ -5,6 +5,7 @@ import (
 	"github.com/dapr-ddd-action/internal/user/domain/aggregate"
 )
 
+// DO Converter 在Infrastructure层，Entity到DO的转化器没有一个标准名称，定位 Data Converter
 // do -> po
 // po -> do
 // note: 待 判空 + 处理业务逻辑边界，如果有错误，需要增加 error 返回值
