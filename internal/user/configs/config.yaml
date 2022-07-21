@@ -11,8 +11,7 @@ log:
   max_backups: 7
 
 database:
-  driver: mysql
   source: root:123456@tcp(127.0.0.1:3306)/mall?charset=utf8mb4&parseTime=true&loc=Local
   log_mode: true
-  max_open_conns: 10
-  max_idle_conns: 10
+  max_open_conn: 10
+  max_idle_conn: 10

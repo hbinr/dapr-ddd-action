@@ -9,7 +9,7 @@ domain 在最底层，传统架构之前是数据库，而domain是Entity、Doma
 ## domain 包含的内容介绍
 
 - Aggregate 聚合根定义，其中包括了domain object 的行为 + 业务规则，包括业务校验
-- service 领域服务实现，主要处理业务规则。更倾向于封装**多对象**逻辑（所以属于跨domain obeject的业务逻辑）。
+- service 领域服务实现，主要处理**业务规则**。更倾向于封装**多对象**逻辑（所以属于跨domain obeject的业务逻辑）。
   - 如果业务很简单，那么该domain service 的封装可不写，domain object 已经足够了
 - repository  仓储接口定义
  <!-- VO 值对象定义 -->

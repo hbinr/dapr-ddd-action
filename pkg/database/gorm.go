@@ -25,8 +25,8 @@ func Init(conf *conf.Database) *gorm.DB {
 	if sqlDB, err = db.DB(); err != nil {
 		log.Fatal(err)
 	}
-	sqlDB.SetMaxIdleConns(int(conf.MaxIdleConns))
-	sqlDB.SetMaxOpenConns(int(conf.MaxOpenConns))
+	sqlDB.SetMaxIdleConns(int(conf.MaxIdleConn))
+	sqlDB.SetMaxOpenConns(int(conf.MaxOpenConn))
 
 	return db
 }

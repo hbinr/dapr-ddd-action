@@ -23,9 +23,8 @@ type LogConfig struct {
 }
 
 type Database struct {
-	Driver       string `mapstructure:"driver"`
-	Source       string `mapstructure:"source"`
-	LogMode      bool   `mapstructure:"log_mode"`
-	MaxIdleConns int    `mapstructure:"max_idle_conns"`
-	MaxOpenConns int    `mapstructure:"max_open_conns"`
+	Source      string `mapstructure:"source"`
+	LogMode     bool   `mapstructure:"log_mode"`
+	MaxIdleConn int    `mapstructure:"max_idle_conn"`
+	MaxOpenConn int    `mapstructure:"max_open_conn"`
 }
